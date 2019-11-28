@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion ProjectConstants.compileSdkVersion
+    buildToolsVersion ProjectConstants.buildToolsVersion
+    defaultConfig {
+        applicationId "com.dtdennis.revolut"
+        minSdkVersion ProjectConstants.minSdkVersion
+        targetSdkVersion ProjectConstants.targetSdkVersion
+        versionCode ProjectConstants.versionCode
+        versionName ProjectConstants.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+}
+
+dependencies {
+    // Dagger
+    api Libraries.dagger
+    annotationProcessor Libraries.daggerCompiler
+
+    // RxJava
+    implementation Libraries.rxJava
+
+    // Retrofit
+    implementation Libraries.retrofit
+    implementation Libraries.retrofitGson
+    implementation Libraries.retrofitRxJavaAdapter
+
+    // Room DB
+    implementation Libraries.roomRuntime
+    annotationProcessor Libraries.roomCompiler
+
+    // Kotlin stuff
+    implementation Libraries.kotlinStdLib
+
+    // Android support
+    implementation Libraries.appCompat
+    implementation Libraries.ktx
+    implementation Libraries.constraintLayout
+
+    // Test stuff
+    testImplementation Libraries.junit
+    testImplementation Libraries.mockito
+    testImplementation Libraries.mockitoKotlin
+    testImplementation Libraries.androidXTestCore
+    testImplementation Libraries.robolectric
+
+    androidTestImplementation Libraries.androidXJUnit
+    androidTestImplementation Libraries.espresso
+}
