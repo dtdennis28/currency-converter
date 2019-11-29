@@ -5,6 +5,7 @@ import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import javax.inject.Inject
 
 /**
  * Simple storage of a single rates manifest to JSON.
@@ -12,10 +13,11 @@ import io.reactivex.Maybe
  * Backed by a [SharedPreferences], uses [Gson] for (de)serialization
  */
 
-private const val MANIFEST_PREFS_KEY = "com.dtdennis.revolut.RatesManifest"
+private const val MANIFEST_PREFS_KEY = "com.dtdennis.currency.RatesManifest"
 
-class PrefsCurrencyRatesStorage(private val sharedPreferences: SharedPreferences,
-                                private val gson: Gson) : CurrencyRatesStorage {
+class PrefsCurrencyRatesStorage
+    @Inject constructor(private val sharedPreferences: SharedPreferences,
+                        private val gson: Gson) : CurrencyRatesStorage {
     override fun setRates(currencyRatesManifest: CurrencyRatesManifest): Completable =
         Completable.fromAction {
             sharedPreferences

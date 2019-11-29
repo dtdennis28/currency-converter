@@ -7,6 +7,7 @@ object Versions {
     val room = "2.2.2"
     val androidXCore = "1.1.0"
     val constraintLayout = "1.1.3"
+    val androidXLifecycle = "2.1.0"
 
     val androidGradle = "3.5.1"
     val kotlin = "1.3.50"
@@ -32,6 +33,8 @@ object Libraries {
 
     val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+
+    val androidXLifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.androidXLifecycle}"
 
     val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
 

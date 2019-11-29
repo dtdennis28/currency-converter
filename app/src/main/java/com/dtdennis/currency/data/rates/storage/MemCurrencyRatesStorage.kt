@@ -3,8 +3,9 @@ package com.dtdennis.currency.data.rates.storage
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import javax.inject.Inject
 
-class MemCurrencyRatesStorage : CurrencyRatesStorage {
+class MemCurrencyRatesStorage @Inject constructor() : CurrencyRatesStorage {
     private var rates: CurrencyRatesManifest? = null
 
     override fun setRates(currencyRatesManifest: CurrencyRatesManifest): Completable =

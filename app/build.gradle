@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion ProjectConstants.compileSdkVersion
@@ -28,7 +29,7 @@ android {
 dependencies {
     // Dagger
     api Libraries.dagger
-    annotationProcessor Libraries.daggerCompiler
+    kapt Libraries.daggerCompiler
 
     // RxJava
     implementation Libraries.rxJava
@@ -38,9 +39,11 @@ dependencies {
     implementation Libraries.retrofitGson
     implementation Libraries.retrofitRxJavaAdapter
 
+    implementation Libraries.androidXLifecycle
+
     // Room DB
     implementation Libraries.roomRuntime
-    annotationProcessor Libraries.roomCompiler
+    kapt Libraries.roomCompiler
 
     // Kotlin stuff
     implementation Libraries.kotlinStdLib
