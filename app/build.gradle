@@ -6,7 +6,7 @@ android {
     compileSdkVersion ProjectConstants.compileSdkVersion
     buildToolsVersion ProjectConstants.buildToolsVersion
     defaultConfig {
-        applicationId "com.dtdennis.revolut"
+        applicationId "com.dtdennis.currency"
         minSdkVersion ProjectConstants.minSdkVersion
         targetSdkVersion ProjectConstants.targetSdkVersion
         versionCode ProjectConstants.versionCode
