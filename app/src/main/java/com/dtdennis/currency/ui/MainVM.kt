@@ -11,7 +11,11 @@ class MainVM @Inject constructor() : ViewModel() {
 
     init {
         _convertedCurrencies.value = listOf(
-            ConvertedCurrency("ABC", "Abc", 1.00)
+            ConvertedCurrency("ABC", "Abc", 1.00),
+            ConvertedCurrency("DEF", "Def", 2.00),
+            ConvertedCurrency("GHI", "Ghi", 3.00),
+            ConvertedCurrency("JKL", "Jkl", 4.00),
+            ConvertedCurrency("MNO", "Mno", 5.00)
         )
     }
 }
