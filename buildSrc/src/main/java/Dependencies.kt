@@ -7,6 +7,8 @@ object Versions {
     val room = "2.2.2"
     val androidXCore = "1.1.0"
     val constraintLayout = "1.1.3"
+    val recyclerview = "1.0.0"
+    val cardView = "1.0.0"
     val androidXLifecycle = "2.1.0"
 
     val androidGradle = "3.5.1"
@@ -27,6 +29,8 @@ object Libraries {
     val appCompat = "androidx.appcompat:appcompat:${Versions.androidXCore}"
     val ktx = "androidx.core:core-ktx:${Versions.androidXCore}"
     val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    val recyclerView = "androidx.recyclerview:recyclerview:${Versions.recyclerview}"
+    val cardView = "androidx.cardview:cardview:${Versions.cardView}"
 
     val dagger = "com.google.dagger:dagger:${Versions.dagger}"
     val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"

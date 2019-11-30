@@ -52,6 +52,8 @@ dependencies {
     implementation Libraries.appCompat
     implementation Libraries.ktx
     implementation Libraries.constraintLayout
+    implementation Libraries.recyclerView
+    implementation Libraries.cardView
 
     // Test stuff
     testImplementation Libraries.junit
