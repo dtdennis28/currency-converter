@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:orientation="vertical">
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/currency_code_tv"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="USD"
-        android:textColor="@android:color/black"
-        android:textSize="22sp" />
+        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/conversion_et">
 
-    <TextView
-        android:id="@+id/currency_name_tv"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/currency_code_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USD"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/currency_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="US Dollar"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/conversion_et"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="US Dollar"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp" />
-</LinearLayout>
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>
