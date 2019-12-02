@@ -3,7 +3,6 @@ package com.dtdennis.currency.ui
 import android.content.Context
 import android.os.Handler
 import android.view.View
-import android.widget.NumberPicker
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -15,10 +14,10 @@ private const val ANIMATION_WAIT_TIME = 500L
 
 class RecyclerViewCoordinator(
     private val recyclerView: RecyclerView,
-    private val onItemsRearrangedListener: (newItems: List<ConvertedCurrency>) -> Unit,
+    private val onItemsRearrangedListener: (newItems: List<CurrencyLineItem>) -> Unit,
     context: Context
 ) {
-    private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked, ::onItemValueChanged)
+    private val adapter = CurrencyLineItemRVAdapter(::onItemClicked, ::onItemValueChanged)
     private val layoutManager = LinearLayoutManager(context)
 
     // Crude way to prevent item changes while animating
@@ -31,11 +30,11 @@ class RecyclerViewCoordinator(
         recyclerView.layoutManager = layoutManager
     }
 
-    fun setItems(items: List<ConvertedCurrency>) {
+    fun setItems(items: List<CurrencyLineItem>) {
         if(!isAwaitingMoveAnimation) adapter.setItems(items)
     }
 
-    private fun onItemClicked(position: Int, item: ConvertedCurrency, itemView: View) {
+    private fun onItemClicked(position: Int, item: CurrencyLineItem, itemView: View) {
         val rearrangedList = adapter.items.toMutableList()
         rearrangedList.removeAt(position)
         rearrangedList.add(0, item)
@@ -49,7 +48,7 @@ class RecyclerViewCoordinator(
         }, ANIMATION_WAIT_TIME)
     }
 
-    private fun onItemValueChanged(position: Int, item: ConvertedCurrency, value: Double) {
+    private fun onItemValueChanged(position: Int, item: CurrencyLineItem, value: Double) {
         val newItems = adapter.items.toMutableList()
         newItems.removeAt(0)
         newItems.add(0, item.copy(value = value))

@@ -37,15 +37,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.conversionList.observe(this,
             Observer<ConversionList> {
                 logger.d(TAG, "New conv list: $it")
-                recyclerViewCoordinator.setItems(
-                    it.lineItems.map {
-                        ConvertedCurrency(it.code, it.name, it.value)
-                    }
-                )
+                recyclerViewCoordinator.setItems(it.lineItems)
             })
     }
 
-    private fun onCurrenciesRearranged(newItems: List<ConvertedCurrency>) {
+    private fun onCurrenciesRearranged(newItems: List<CurrencyLineItem>) {
         val base = newItems[0]
         val positions =
             newItems.associate {
@@ -70,11 +66,7 @@ class MainActivity : AppCompatActivity() {
         if (immediateConverionList != null) {
             Handler().postDelayed(
                 {
-                    recyclerViewCoordinator.setItems(
-                        immediateConverionList.lineItems.map {
-                            ConvertedCurrency(it.code, it.name, it.value)
-                        }
-                    )
+                    recyclerViewCoordinator.setItems(immediateConverionList.lineItems)
                 },
                 1
             )

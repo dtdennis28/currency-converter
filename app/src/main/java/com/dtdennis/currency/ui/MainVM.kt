@@ -8,11 +8,8 @@ import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.dtdennis.currency.data.util.Logger
-import com.dtdennis.currency.ui.rx.UserChangesFlowableWrapper
 import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject

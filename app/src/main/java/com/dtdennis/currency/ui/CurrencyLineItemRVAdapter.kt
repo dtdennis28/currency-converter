@@ -11,14 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 
-class ConvertedCurrencyRVAdapter(
-    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit,
-    private val onValueChangeListener: (position: Int, item: ConvertedCurrency, value: Double) -> Unit
-) : RecyclerView.Adapter<ConvertedCurrencyRVAdapter.ConvertedCurrencyVH>() {
-    var items: List<ConvertedCurrency> = emptyList()
+class CurrencyLineItemRVAdapter(
+    private val onItemClickListener: (position: Int, item: CurrencyLineItem, itemView: View) -> Unit,
+    private val onValueChangeListener: (position: Int, item: CurrencyLineItem, value: Double) -> Unit
+) : RecyclerView.Adapter<CurrencyLineItemRVAdapter.CurrencyLineItemVH>() {
+    var items: List<CurrencyLineItem> = emptyList()
         private set
 
-    class ConvertedCurrencyVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CurrencyLineItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyCodeTV = itemView.findViewById<TextView>(R.id.currency_code_tv)
         val currencyNameTV = itemView.findViewById<TextView>(R.id.currency_name_tv)
         val conversionET = itemView.findViewById<EditText>(R.id.conversion_et)
@@ -53,7 +53,7 @@ class ConvertedCurrencyRVAdapter(
     /**
      * Full re-set of the list (e.g. backing list & view re-render)
      */
-    fun setItems(items: List<ConvertedCurrency>) {
+    fun setItems(items: List<CurrencyLineItem>) {
         this.items = items
 
         // Use notifyItemChanged over notifyDataSetChanged to keep from re-render glitches
@@ -67,7 +67,7 @@ class ConvertedCurrencyRVAdapter(
      * Only notify the adapter about the moved item, but also re-set the backing list
      * Will maintain all views already bound, but re-bind the rearranged item
      */
-    fun onItemMoved(newItems: List<ConvertedCurrency>, fromPosition: Int, toPosition: Int) {
+    fun onItemMoved(newItems: List<CurrencyLineItem>, fromPosition: Int, toPosition: Int) {
         this.items = newItems
         notifyItemMoved(fromPosition, toPosition)
         this.items.forEachIndexed { index, item ->
@@ -75,13 +75,13 @@ class ConvertedCurrencyRVAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConvertedCurrencyVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyLineItemVH {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.list_item_currency, parent, false)
-        return ConvertedCurrencyVH(itemView)
+        return CurrencyLineItemVH(itemView)
     }
 
-    override fun onBindViewHolder(holder: ConvertedCurrencyVH, position: Int) {
+    override fun onBindViewHolder(holder: CurrencyLineItemVH, position: Int) {
         val item = items[position]
 
         holder.currencyCodeTV.text = item.code
@@ -93,8 +93,8 @@ class ConvertedCurrencyRVAdapter(
 
     private fun bindFirstItem(
         position: Int,
-        item: ConvertedCurrency,
-        holder: ConvertedCurrencyVH
+        item: CurrencyLineItem,
+        holder: CurrencyLineItemVH
     ) {
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
@@ -114,8 +114,8 @@ class ConvertedCurrencyRVAdapter(
 
     private fun bindNonFirstItem(
         position: Int,
-        item: ConvertedCurrency,
-        holder: ConvertedCurrencyVH
+        item: CurrencyLineItem,
+        holder: CurrencyLineItemVH
     ) {
         if(holder.textWatcher != null) {
             holder.conversionET.removeTextChangedListener(holder.textWatcher)
