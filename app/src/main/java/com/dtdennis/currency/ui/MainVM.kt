@@ -1,6 +1,7 @@
 package com.dtdennis.currency.ui
 
 import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dtdennis.currency.core.conversion.CurrencyConverter
 import com.dtdennis.currency.core.currencies.Currency
@@ -8,6 +9,7 @@ import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.dtdennis.currency.data.util.Logger
+import com.dtdennis.currency.ui.util.LiveDataEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -61,11 +63,23 @@ class MainVM @Inject constructor(
             .flatMap(::combineDataStreams)
             .map(::composeConversionList)
             .toFlowable(BackpressureStrategy.LATEST)
-            .doOnNext {
-                logger.d(TAG, "onNext: $it")
+            .doOnError {
+                _fetchingError.postValue(LiveDataEvent("There was trouble fetching the latest rates. Tap to retry"))
+            }
+            .onErrorReturn {
+                logger.e(TAG, it)
+
+                if(latestStreams != null) {
+                    composeConversionList(latestStreams!!)
+                } else {
+                    ConversionList(DEFAULT_BASELINE, emptyList())
+                }
             }
 
     val conversionList = LiveDataReactiveStreams.fromPublisher(conversionListFlowable)
+
+    private var _fetchingError = MutableLiveData<LiveDataEvent<String>>()
+    val fetchingError = _fetchingError
 
     /**
      * Immediately return the re-converted item without waiting for a new manifest
