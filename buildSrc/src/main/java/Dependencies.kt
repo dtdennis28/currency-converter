@@ -4,7 +4,6 @@ object Versions {
     val retrofit = "2.6.2"
 
     // Support type libs
-    val room = "2.2.2"
     val androidXCore = "1.1.0"
     val constraintLayout = "1.1.3"
     val recyclerview = "1.0.0"
@@ -35,10 +34,8 @@ object Libraries {
     val dagger = "com.google.dagger:dagger:${Versions.dagger}"
     val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
-    val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
-    val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
-
     val androidXLifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.androidXLifecycle}"
+    val androidXLifecycleRx = "androidx.lifecycle:lifecycle-reactivestreams:${Versions.androidXLifecycle}"
 
     val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
 

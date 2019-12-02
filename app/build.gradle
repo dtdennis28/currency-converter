@@ -39,11 +39,8 @@ dependencies {
     implementation Libraries.retrofitGson
     implementation Libraries.retrofitRxJavaAdapter
 
-    implementation Libraries.androidXLifecycle
-
     // Room DB
-    implementation Libraries.roomRuntime
-    kapt Libraries.roomCompiler
+
 
     // Kotlin stuff
     implementation Libraries.kotlinStdLib
@@ -54,6 +51,8 @@ dependencies {
     implementation Libraries.constraintLayout
     implementation Libraries.recyclerView
     implementation Libraries.cardView
+    implementation Libraries.androidXLifecycle
+    implementation Libraries.androidXLifecycleRx
 
     // Test stuff
     testImplementation Libraries.junit

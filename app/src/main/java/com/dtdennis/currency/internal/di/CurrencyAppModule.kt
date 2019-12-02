@@ -4,7 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.dtdennis.currency.core.currencies.SupportedCurrenciesRepository
 import com.dtdennis.currency.core.rates.CurrencyRatesRepository
+import com.dtdennis.currency.data.currencies.SupportedCurrenciesLocalService
+import com.dtdennis.currency.data.currencies.SupportedCurrenciesRepositoryImpl
 import com.dtdennis.currency.data.rates.CurrencyRatesRepositoryImpl
 import com.dtdennis.currency.data.rates.CurrencyRatesService
 import com.dtdennis.currency.data.rates.storage.MemCurrencyRatesStorage
@@ -37,6 +40,16 @@ class CurrencyAppModule(private val app: Application) {
     @Singleton
     fun provideLogger(): Logger {
         return AppLogger()
+    }
+
+    @Provides
+    fun provideSupportedCurrenciesService(context: Context): SupportedCurrenciesLocalService {
+        return SupportedCurrenciesLocalService(context.assets)
+    }
+
+    @Provides
+    fun provideSupportedCurrenciesRepository(supportedCurrenciesLocalService: SupportedCurrenciesLocalService): SupportedCurrenciesRepository {
+        return SupportedCurrenciesRepositoryImpl(supportedCurrenciesLocalService)
     }
 
     @Provides

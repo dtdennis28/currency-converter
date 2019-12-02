@@ -2,9 +2,11 @@ package com.dtdennis.currency.core.rates
 
 import com.dtdennis.currency.util.mothers.CurrencyRatesManifestMother
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
+import org.reactivestreams.Publisher
 
 /**
  * The class-under-test is really simple. Just putting a simple test in here that will break
@@ -60,6 +62,14 @@ class DummyCurrencyRatesRepository(private var manifest: CurrencyRatesManifest? 
                 emitter.onError(Error("No manifest available"))
             }
         }.toFlowable()
+    }
+
+    override fun getRates(baseCurrency: String): Single<CurrencyRatesManifest> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun streamRates(basePublisher: Observable<String>): Flowable<CurrencyRatesManifest> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun setManifest(manifest: CurrencyRatesManifest? = null) {

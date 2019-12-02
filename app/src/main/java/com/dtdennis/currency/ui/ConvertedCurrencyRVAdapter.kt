@@ -27,8 +27,6 @@ class ConvertedCurrencyRVAdapter(
      * Full re-set of the list (e.g. backing list & view re-render)
      */
     fun setItems(items: List<ConvertedCurrency>) {
-        println("Setting items $items")
-
         this.items = items
         notifyDataSetChanged()
     }
@@ -56,7 +54,7 @@ class ConvertedCurrencyRVAdapter(
 
         holder.currencyCodeTV.text = item.code
         holder.currencyNameTV.text = item.name
-        holder.conversionET.setText(String.format("%.2f", item.value))
+        holder.conversionET.setText(String.format("%.3f", item.value))
 
         if(position == 0) setFirstItemTouchListeners(holder)
         else setNonFirstItemTouchListeners(position, item, holder)

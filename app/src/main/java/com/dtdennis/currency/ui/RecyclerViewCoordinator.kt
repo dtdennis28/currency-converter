@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class RecyclerViewCoordinator(
     private val recyclerView: RecyclerView,
+    private val onItemsRearrangedListener: (newItems: List<ConvertedCurrency>) -> Unit,
     context: Context
 ) {
     private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked)
@@ -28,5 +29,6 @@ class RecyclerViewCoordinator(
         rearrangedList.add(0, item)
 
         adapter.onItemMoved(rearrangedList, position, 0)
+        onItemsRearrangedListener(rearrangedList)
     }
 }

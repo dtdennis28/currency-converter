@@ -7,6 +7,7 @@ import com.dtdennis.currency.data.rates.storage.PrefsCurrencyRatesStorage
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.data.util.SchedulerProvider
 import io.reactivex.*
+import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "CurrRatesRepo"
@@ -37,26 +38,60 @@ class CurrencyRatesRepositoryImpl(
     override fun streamRates(baseCurrency: String): Flowable<CurrencyRatesManifest> {
         return Flowable
             .interval(SERVICE_PING_INTERVAL, PING_TIME_UNIT, schedulerProvider.io)
-            .flatMapSingle {
-                service.getRates(baseCurrency)
+            .flatMap {
+                service
+                    .getRates(baseCurrency)
+                    .flatMap(::storeNewRates)
+                    .toFlowable()
+                    .onErrorResumeNext { error: Throwable ->
+                        // "Report error"
+                        logger.e(TAG, error)
+                        memoryThenStorageRates(baseCurrency).toFlowable()
+                    }
             }
+    }
+
+    override fun getRates(baseCurrency: String): Single<CurrencyRatesManifest> {
+        return service
+            .getRates(baseCurrency)
             .flatMap(::storeNewRates)
             .onErrorResumeNext { error: Throwable ->
                 // "Report error"
                 logger.e(TAG, error)
 
-                memoryThenStorageRates(baseCurrency).toFlowable()
+                // TODO - downstream handle error
+                memoryThenStorageRates(baseCurrency).toSingle()
             }
+            .subscribeOn(schedulerProvider.io)
+    }
+
+    override fun streamRates(basePublisher: Observable<String>): Flowable<CurrencyRatesManifest> {
+        return Observable.interval(SERVICE_PING_INTERVAL, PING_TIME_UNIT, schedulerProvider.io)
+            .flatMap {
+                basePublisher
+            }
+            .flatMap { baseCurrency ->
+                service
+                    .getRates(baseCurrency)
+                    .flatMap(::storeNewRates)
+                    .toObservable()
+                    .onErrorResumeNext { error: Throwable ->
+                        // "Report error"
+                        logger.e(TAG, error)
+                        memoryThenStorageRates(baseCurrency).toObservable()
+                    }
+            }
+            .toFlowable(BackpressureStrategy.LATEST)
     }
 
     /**
      * Take the new rates and store them, then return a flowable emitting these new rates
      */
-    private fun storeNewRates(newRates: CurrencyRatesManifest): Flowable<CurrencyRatesManifest> {
+    private fun storeNewRates(newRates: CurrencyRatesManifest): Single<CurrencyRatesManifest> {
         return diskStorage
             .setRates(newRates)
             .andThen(memoryStorage.setRates(newRates))
-            .andThen(Flowable.just(newRates))
+            .andThen(Single.just(newRates))
     }
 
     private fun currentRates(base: String) =
