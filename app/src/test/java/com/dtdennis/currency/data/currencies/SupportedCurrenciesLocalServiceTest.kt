@@ -13,11 +13,11 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class DefaultSupportedCurrenciesServiceTest {
+class SupportedCurrenciesLocalServiceTest {
     @Test
     fun Should_ParseSupportedCurrenciesList() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val localService = DefaultSupportedCurrenciesService(context.assets)
+        val localService = SupportedCurrenciesLocalService(context.assets)
 
         val supportedCurrencies = localService.getSupportedCurrencies()
         println(supportedCurrencies)

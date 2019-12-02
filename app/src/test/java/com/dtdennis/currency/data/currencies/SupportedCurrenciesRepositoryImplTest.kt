@@ -7,7 +7,7 @@ import org.junit.Test
 
 class SupportedCurrenciesRepositoryImplTest {
     private val fakeList = listOf(Currency("ABC", "Fake"))
-    private val supportedCurrSvc = mock<DefaultSupportedCurrenciesService> {
+    private val supportedCurrSvc = mock<SupportedCurrenciesLocalService> {
         on { getSupportedCurrencies() } doReturn fakeList
     }
 
