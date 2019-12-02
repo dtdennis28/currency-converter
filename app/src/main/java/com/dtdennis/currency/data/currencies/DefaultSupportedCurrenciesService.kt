@@ -11,7 +11,7 @@ import com.google.gson.JsonParser
  */
 private const val FILENAME = "currency_codes_manifest.json"
 
-class SupportedCurrenciesLocalService(
+class DefaultSupportedCurrenciesService(
     private val assetManager: AssetManager
 ) {
     private val parser = JsonParser()

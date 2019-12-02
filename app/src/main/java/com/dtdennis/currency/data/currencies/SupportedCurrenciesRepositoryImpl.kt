@@ -5,7 +5,7 @@ import com.dtdennis.currency.core.currencies.SupportedCurrenciesRepository
 import io.reactivex.Single
 
 class SupportedCurrenciesRepositoryImpl(
-    private val service: SupportedCurrenciesLocalService
+    private val serviceDefault: DefaultSupportedCurrenciesService
 ) : SupportedCurrenciesRepository {
     // Keep in memory ref for perf
     private var supportedCurrencies: List<Currency>? = null
@@ -13,7 +13,7 @@ class SupportedCurrenciesRepositoryImpl(
     override fun getSupportedCurrencies(): Single<List<Currency>> =
         Single.fromCallable {
             if (supportedCurrencies == null)
-                supportedCurrencies = service.getSupportedCurrencies()
+                supportedCurrencies = serviceDefault.getSupportedCurrencies()
 
             supportedCurrencies
         }

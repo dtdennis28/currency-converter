@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesRepository
 import com.dtdennis.currency.core.rates.CurrencyRatesRepository
-import com.dtdennis.currency.data.currencies.SupportedCurrenciesLocalService
+import com.dtdennis.currency.data.currencies.DefaultSupportedCurrenciesService
 import com.dtdennis.currency.data.currencies.SupportedCurrenciesRepositoryImpl
 import com.dtdennis.currency.data.rates.CurrencyRatesRepositoryImpl
 import com.dtdennis.currency.data.rates.CurrencyRatesService
+import com.dtdennis.currency.data.rates.DefaultCurrencyRatesService
 import com.dtdennis.currency.data.rates.storage.MemCurrencyRatesStorage
 import com.dtdennis.currency.data.rates.storage.PrefsCurrencyRatesStorage
 import com.dtdennis.currency.data.util.Logger
@@ -20,7 +21,6 @@ import com.dtdennis.currency.util.AppSchedulerProvider
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -43,13 +43,18 @@ class CurrencyAppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideSupportedCurrenciesService(context: Context): SupportedCurrenciesLocalService {
-        return SupportedCurrenciesLocalService(context.assets)
+    fun provideSupportedCurrenciesService(context: Context): DefaultSupportedCurrenciesService {
+        return DefaultSupportedCurrenciesService(context.assets)
     }
 
     @Provides
-    fun provideSupportedCurrenciesRepository(supportedCurrenciesLocalService: SupportedCurrenciesLocalService): SupportedCurrenciesRepository {
-        return SupportedCurrenciesRepositoryImpl(supportedCurrenciesLocalService)
+    fun provideSupportedCurrenciesRepository(defaultSupportedCurrenciesService: DefaultSupportedCurrenciesService): SupportedCurrenciesRepository {
+        return SupportedCurrenciesRepositoryImpl(defaultSupportedCurrenciesService)
+    }
+
+    @Provides
+    fun provideDefaultCurrencyRatesServie(context: Context): DefaultCurrencyRatesService {
+        return DefaultCurrencyRatesService(context.assets)
     }
 
     @Provides
@@ -58,14 +63,16 @@ class CurrencyAppModule(private val app: Application) {
         schedulerProvider: SchedulerProvider,
         currencyRatesService: CurrencyRatesService,
         diskStorage: PrefsCurrencyRatesStorage,
-        memoryStorage: MemCurrencyRatesStorage
+        memoryStorage: MemCurrencyRatesStorage,
+        defaultCurrencyRatesService: DefaultCurrencyRatesService
     ): CurrencyRatesRepository {
         return CurrencyRatesRepositoryImpl(
             logger,
             schedulerProvider,
             currencyRatesService,
             diskStorage,
-            memoryStorage
+            memoryStorage,
+            defaultCurrencyRatesService
         )
     }
 
