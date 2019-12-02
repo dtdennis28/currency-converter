@@ -1,11 +1,14 @@
 package com.dtdennis.currency.ui
 
+import android.content.Context
+import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -124,8 +127,19 @@ class CurrencyLineItemRVAdapter(
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
 
-        if (!holder.conversionET.hasFocus()) {
+        holder.conversionET.setOnFocusChangeListener { view, hasFocus ->
+            if(!hasFocus) {
+                holder.conversionET.setText(String.format("%.3f", item.value))
+                holder.conversionET.setTextColor(Color.BLACK)
+                hideKeyboard(holder.conversionET)
+            } else {
+                holder.conversionET.setTextColor(holder.itemView.resources.getColor(R.color.colorAccent))
+            }
+        }
+
+        if(!holder.conversionET.hasFocus()) {
             holder.conversionET.setText(String.format("%.3f", item.value))
+            holder.conversionET.setTextColor(Color.BLACK)
             holder.conversionET.setSelection(holder.conversionET.text.length)
         }
 
@@ -135,6 +149,11 @@ class CurrencyLineItemRVAdapter(
             }
             holder.conversionET.addTextChangedListener(holder.textWatcher)
         }
+    }
+
+    private fun hideKeyboard(editText: View) {
+        val imm =  editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
     private fun bindNonFirstItem(
@@ -147,7 +166,10 @@ class CurrencyLineItemRVAdapter(
             holder.textWatcher = null
         }
 
+        holder.conversionET.onFocusChangeListener = null
+
         holder.conversionET.setText(String.format("%.3f", item.value))
+        holder.conversionET.setTextColor(Color.BLACK)
 
         // Override on-touch action-up to treat the "click" on the ET the same as an item click
         // This will leave it so that all clicks, regardless of which child item is touched,
@@ -168,6 +190,7 @@ class CurrencyLineItemRVAdapter(
             // So immediately request focus
             holder.conversionET.requestFocus()
             holder.conversionET.setSelection(holder.conversionET.text.length)
+            holder.conversionET.setTextColor(holder.itemView.resources.getColor(R.color.colorAccent))
         }
     }
 }
