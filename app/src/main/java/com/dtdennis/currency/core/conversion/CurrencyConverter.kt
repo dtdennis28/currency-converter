@@ -10,8 +10,16 @@ package com.dtdennis.currency.core.conversion
  * describe or account for the original currency.
  */
 class CurrencyConverter(private val ratesMap: Map<String, Double>) {
-    fun convert(value: Double, destinationCode: String): Double =
-        value * getRateByCode(destinationCode)
+    fun convert(fromValue: Double, fromCode: String, destinationCode: String): Double {
+        val fromRate = getRateByCode(fromCode)
+        val toRate = getRateByCode(destinationCode)
+
+        /*
+            (Fv / Fr) = (Tv / Tr)
+            (Fv / Fr) * Tr = Tv
+         */
+        return (fromValue / fromRate) * toRate
+    }
 
     private fun getRateByCode(codeToRequire: String): Double {
         require(ratesMap.containsKey(codeToRequire)) { "Unexpected code: $codeToRequire. Please provide one of the following: ${ratesMap.keys}" }

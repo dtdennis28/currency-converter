@@ -14,6 +14,8 @@ private const val TAG = "CurrRatesRepo"
 private const val SERVICE_PING_INTERVAL = 1L
 private val PING_TIME_UNIT = TimeUnit.SECONDS
 
+private const val BASE_CURRENCY = "EUR"
+
 class CurrencyRatesRepositoryImpl(
     private val logger: Logger,
     private val schedulerProvider: SchedulerProvider,
@@ -35,54 +37,30 @@ class CurrencyRatesRepositoryImpl(
      * attempt in-memory; if null, attempt cache,
      * if still null, throw error but keep trying
      */
-    override fun streamRates(baseCurrency: String): Flowable<CurrencyRatesManifest> {
-        return Flowable
+    override fun streamRates(): Observable<CurrencyRatesManifest> {
+        return Observable
             .interval(SERVICE_PING_INTERVAL, PING_TIME_UNIT, schedulerProvider.io)
             .flatMap {
                 service
-                    .getRates(baseCurrency)
+                    .getRates(BASE_CURRENCY)
+                    .map {
+                        // Insert the base rate into the manifest so that it's usable regardless of which
+                        // currency is being converted from
+                        val ratesWithBaseIncluded = it.rates.toMutableMap()
+                        ratesWithBaseIncluded[it.base] = 1.0
+
+                        return@map it.copy(rates = ratesWithBaseIncluded)
+                    }
                     .flatMap(::storeNewRates)
-                    .toFlowable()
                     .onErrorResumeNext { error: Throwable ->
                         // "Report error"
                         logger.e(TAG, error)
-                        memoryThenStorageRates(baseCurrency).toFlowable()
+                        memoryThenStorageRates().toSingle()
                     }
-            }
-    }
-
-    override fun getRates(baseCurrency: String): Single<CurrencyRatesManifest> {
-        return service
-            .getRates(baseCurrency)
-            .flatMap(::storeNewRates)
-            .onErrorResumeNext { error: Throwable ->
-                // "Report error"
-                logger.e(TAG, error)
-
-                // TODO - downstream handle error
-                memoryThenStorageRates(baseCurrency).toSingle()
-            }
-            .subscribeOn(schedulerProvider.io)
-    }
-
-    override fun streamRates(basePublisher: Observable<String>): Flowable<CurrencyRatesManifest> {
-        return Observable.interval(SERVICE_PING_INTERVAL, PING_TIME_UNIT, schedulerProvider.io)
-            .flatMap {
-                basePublisher
-            }
-            .flatMap { baseCurrency ->
-                service
-                    .getRates(baseCurrency)
-                    .flatMap(::storeNewRates)
                     .toObservable()
-                    .onErrorResumeNext { error: Throwable ->
-                        // "Report error"
-                        logger.e(TAG, error)
-                        memoryThenStorageRates(baseCurrency).toObservable()
-                    }
             }
-            .toFlowable(BackpressureStrategy.LATEST)
     }
+
 
     /**
      * Take the new rates and store them, then return a flowable emitting these new rates
@@ -94,22 +72,9 @@ class CurrencyRatesRepositoryImpl(
             .andThen(Single.just(newRates))
     }
 
-    private fun currentRates(base: String) =
-        memoryStorage
-            .getRates()
-            .filter {
-                it.base == base
-            }
 
-    private fun storageRates(base: String) =
-        diskStorage
-            .getRates()
-            .filter {
-                it.base == base
-            }
-
-    private fun memoryThenStorageRates(base: String): Maybe<CurrencyRatesManifest> {
-        return currentRates(base)
-            .switchIfEmpty(storageRates(base))
+    private fun memoryThenStorageRates(): Maybe<CurrencyRatesManifest> {
+        return memoryStorage.getRates()
+            .switchIfEmpty(diskStorage.getRates())
     }
 }

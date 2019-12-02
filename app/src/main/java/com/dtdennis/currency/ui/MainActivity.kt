@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-        val immediateConverionList = viewModel.onBaselineChanged(
+        viewModel.onBaselineChanged(
             UserBaseline(
                 base.code,
                 base.name,
@@ -79,17 +79,5 @@ class MainActivity : AppCompatActivity() {
                 positions
             )
         )
-
-        // We have an immediate conversion to display
-        // Posting w/ delay because otherwise it will try to call "setItems" while recyclerview
-        // is still scrolling / animating
-        if (immediateConverionList != null) {
-            Handler().postDelayed(
-                {
-                    recyclerViewCoordinator.setItems(immediateConverionList.lineItems)
-                },
-                1
-            )
-        }
     }
 }
