@@ -2,6 +2,7 @@ object Versions {
     val dagger = "2.25.2"
     val rxJava = "2.2.2"
     val retrofit = "2.6.2"
+    val picasso = "2.71828"
 
     // Support type libs
     val androidXCore = "1.1.0"
@@ -42,6 +43,8 @@ object Libraries {
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofitRxJavaAdapter = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
     val retrofitGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+
+    val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
 
     val junit = "junit:junit:${Versions.junit}"
     val androidXTestCore = "androidx.test:core:${Versions.androidXCore}"

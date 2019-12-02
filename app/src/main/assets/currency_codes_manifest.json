@@ -4,7 +4,7 @@
     "name": "Australian Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_aud"
+      "location": "ic_aud"
     }
   },
   {
@@ -12,7 +12,7 @@
     "name": "Bulgarian Lev",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_bgn"
+      "location": "ic_bgn"
     }
   },
   {
@@ -20,7 +20,7 @@
     "name": "Brazilian Real",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_brl"
+      "location": "ic_brl"
     }
   },
   {
@@ -28,7 +28,7 @@
     "name": "Canadian Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_cad"
+      "location": "ic_cad"
     }
   },
   {
@@ -36,7 +36,7 @@
     "name": "Swiss Franc",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_chf"
+      "location": "ic_chf"
     }
   },
   {
@@ -44,7 +44,7 @@
     "name": "Chinese Yuan",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_cny"
+      "location": "ic_cny"
     }
   },
   {
@@ -52,7 +52,7 @@
     "name": "Czech Koruna",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_czk"
+      "location": "ic_czk"
     }
   },
   {
@@ -60,7 +60,7 @@
     "name": "Danish Krone",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_dkk"
+      "location": "ic_dkk"
     }
   },
   {
@@ -68,7 +68,7 @@
     "name": "Euro",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_eur"
+      "location": "ic_eur"
     }
   },
   {
@@ -76,7 +76,7 @@
     "name": "British Pound",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_gbp"
+      "location": "ic_gbp"
     }
   },
   {
@@ -84,7 +84,7 @@
     "name": "Hong Kong Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_hkd"
+      "location": "ic_hkd"
     }
   },
   {
@@ -92,7 +92,7 @@
     "name": "Croatian Kuna",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_hrk"
+      "location": "ic_hrk"
     }
   },
   {
@@ -100,7 +100,7 @@
     "name": "Hungarian Forint",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_huf"
+      "location": "ic_huf"
     }
   },
   {
@@ -108,15 +108,15 @@
     "name": "Indonesian Rupiah",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_idr"
+      "location": "ic_idr"
     }
   },
   {
     "code": "ILS",
-    "name": "Israli New Shekel",
+    "name": "Israeli New Shekel",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_ils"
+      "location": "ic_ils"
     }
   },
   {
@@ -124,7 +124,7 @@
     "name": "Indian Rupee",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_inr"
+      "location": "ic_inr"
     }
   },
   {
@@ -132,7 +132,7 @@
     "name": "Icelandic Króna",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_isk"
+      "location": "ic_isk"
     }
   },
   {
@@ -140,7 +140,7 @@
     "name": "Japanese Yen",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_jpy"
+      "location": "ic_jpy"
     }
   },
   {
@@ -148,7 +148,7 @@
     "name": "South Korean Won",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_krw"
+      "location": "ic_krw"
     }
   },
   {
@@ -156,7 +156,7 @@
     "name": "Mexican Peso",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_mxn"
+      "location": "ic_mxn"
     }
   },
   {
@@ -164,7 +164,7 @@
     "name": "Malaysian Ringgit",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_myr"
+      "location": "ic_myr"
     }
   },
   {
@@ -172,7 +172,7 @@
     "name": "Norwegian Krone",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_nok"
+      "location": "ic_nok"
     }
   },
   {
@@ -180,7 +180,7 @@
     "name": "New Zealand Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_nzd"
+      "location": "ic_nzd"
     }
   },
   {
@@ -188,7 +188,7 @@
     "name": "Philippine Peso",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_php"
+      "location": "ic_php"
     }
   },
   {
@@ -196,7 +196,7 @@
     "name": "Polish Złoty",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_pln"
+      "location": "ic_pln"
     }
   },
   {
@@ -204,7 +204,7 @@
     "name": "Romanian Leu",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_ron"
+      "location": "ic_ron"
     }
   },
   {
@@ -212,7 +212,7 @@
     "name": "Russian Ruble",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_rub"
+      "location": "ic_rub"
     }
   },
   {
@@ -220,7 +220,7 @@
     "name": "Swedish Krona",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_sek"
+      "location": "ic_sek"
     }
   },
   {
@@ -228,7 +228,7 @@
     "name": "Singapore Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_sgd"
+      "location": "ic_sgd"
     }
   },
   {
@@ -236,7 +236,7 @@
     "name": "Thai Baht",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_thb"
+      "location": "ic_thb"
     }
   },
   {
@@ -244,7 +244,7 @@
     "name": "Turkish Lira",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_try"
+      "location": "ic_try"
     }
   },
   {
@@ -252,7 +252,7 @@
     "name": "US Dollar",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_usd"
+      "location": "ic_usd"
     }
   },
   {
@@ -260,7 +260,7 @@
     "name": "South African Rand",
     "icon": {
       "type": "LOCAL",
-      "location": "R.drawable.ic_zar"
+      "location": "ic_zar"
     }
   }
 ]

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.dtdennis.currency.core.conversion.CurrencyConverter
 import com.dtdennis.currency.core.currencies.Currency
+import com.dtdennis.currency.core.currencies.CurrencyIcon
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
@@ -21,6 +22,10 @@ private const val TAG = "MainVM"
 private const val DEFAULT_CURRENCY_CODE = "EUR"
 private const val DEFAULT_CURRENCY_NAME = "Euro"
 private const val DEFAULT_VALUE = 1.0
+private val DEFAULT_ICON = CurrencyIcon(
+    CurrencyIcon.Type.LOCAL,
+    "R.drawable.ic_currency_generic"
+)
 
 class MainVM @Inject constructor(
     private val logger: Logger,
@@ -87,10 +92,12 @@ class MainVM @Inject constructor(
         val converter = CurrencyConverter(manifest.rates)
 
         // Initial line item (baseline)
+        val baselineCurrency = getCurrency(baseline.code, supportedCurrencies)
         newList.add(
             CurrencyLineItem(
                 baseline.code,
-                getCurrencyName(baseline.code, supportedCurrencies),
+                baselineCurrency.name,
+                baselineCurrency.icon,
                 baseline.value
             )
         )
@@ -129,9 +136,9 @@ class MainVM @Inject constructor(
         return ConversionList(baseline, newList)
     }
 
-    private fun getCurrencyName(code: String, supportedCurrencies: Map<String, Currency>): String {
+    private fun getCurrency(code: String, supportedCurrencies: Map<String, Currency>): Currency {
         // Check local list of supported currencies for a user-readable name
-        return supportedCurrencies[code]?.name ?: ""
+        return supportedCurrencies[code] ?: Currency(code, code, DEFAULT_ICON)
     }
 
     private fun mapToCurrencyLineItem(
@@ -143,8 +150,8 @@ class MainVM @Inject constructor(
     ): CurrencyLineItem {
         val convertedValue = converter.convert(baseValue, baseCode, toCode)
 
-        val name = supportedCurrencies[toCode]?.name ?: ""
+        val currency = getCurrency(toCode, supportedCurrencies)
 
-        return CurrencyLineItem(toCode, name, convertedValue)
+        return CurrencyLineItem(toCode, currency.name, currency.icon, convertedValue)
     }
 }

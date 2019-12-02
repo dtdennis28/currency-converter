@@ -7,18 +7,24 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
+import com.dtdennis.currency.core.currencies.CurrencyIcon
+import com.squareup.picasso.Picasso
 
 class CurrencyLineItemRVAdapter(
     private val onItemClickListener: (position: Int, item: CurrencyLineItem, itemView: View) -> Unit,
     private val onValueChangeListener: (position: Int, item: CurrencyLineItem, value: Double) -> Unit
 ) : RecyclerView.Adapter<CurrencyLineItemRVAdapter.CurrencyLineItemVH>() {
+    private val picasso = Picasso.get()
+
     var items: List<CurrencyLineItem> = emptyList()
         private set
 
     class CurrencyLineItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val currencyIconIV = itemView.findViewById<ImageView>(R.id.currency_icon_iv)
         val currencyCodeTV = itemView.findViewById<TextView>(R.id.currency_code_tv)
         val currencyNameTV = itemView.findViewById<TextView>(R.id.currency_name_tv)
         val conversionET = itemView.findViewById<EditText>(R.id.conversion_et)
@@ -84,11 +90,30 @@ class CurrencyLineItemRVAdapter(
     override fun onBindViewHolder(holder: CurrencyLineItemVH, position: Int) {
         val item = items[position]
 
+        bindIcon(item, holder)
+
         holder.currencyCodeTV.text = item.code
         holder.currencyNameTV.text = item.name
 
         if (position == 0) bindFirstItem(position, item, holder)
         else bindNonFirstItem(position, item, holder)
+    }
+
+    private fun bindIcon(item: CurrencyLineItem, holder: CurrencyLineItemVH) {
+        // Load the icon based on local or remote
+        if (item.icon.type == CurrencyIcon.Type.LOCAL) {
+            picasso.load(
+                ResourceIdFetcher.getDrawableResIdFromResName(
+                    holder.itemView.context,
+                    item.icon.location,
+                    R.drawable.ic_currency_generic
+                )
+            )
+                .fit()
+                .into(holder.currencyIconIV)
+        } else {
+            picasso.load(item.icon.location).into(holder.currencyIconIV)
+        }
     }
 
     private fun bindFirstItem(
@@ -117,7 +142,7 @@ class CurrencyLineItemRVAdapter(
         item: CurrencyLineItem,
         holder: CurrencyLineItemVH
     ) {
-        if(holder.textWatcher != null) {
+        if (holder.textWatcher != null) {
             holder.conversionET.removeTextChangedListener(holder.textWatcher)
             holder.textWatcher = null
         }

@@ -39,8 +39,7 @@ dependencies {
     implementation Libraries.retrofitGson
     implementation Libraries.retrofitRxJavaAdapter
 
-    // Room DB
-
+    implementation Libraries.picasso
 
     // Kotlin stuff
     implementation Libraries.kotlinStdLib
