@@ -2,6 +2,7 @@ package com.dtdennis.currency.ui
 
 import android.content.Context
 import android.view.View
+import android.widget.NumberPicker
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,7 +14,7 @@ class RecyclerViewCoordinator(
     private val onItemsRearrangedListener: (newItems: List<ConvertedCurrency>) -> Unit,
     context: Context
 ) {
-    private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked)
+    private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked, ::onItemValueChanged)
     private val layoutManager = LinearLayoutManager(context)
 
     init {
@@ -30,5 +31,13 @@ class RecyclerViewCoordinator(
 
         adapter.onItemMoved(rearrangedList, position, 0)
         onItemsRearrangedListener(rearrangedList)
+    }
+
+    fun onItemValueChanged(position: Int, item: ConvertedCurrency, value: Double) {
+        val newItems = adapter.items.toMutableList()
+        newItems.removeAt(0)
+        newItems.add(0, item.copy(value = value))
+
+        onItemsRearrangedListener(newItems)
     }
 }

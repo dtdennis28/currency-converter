@@ -1,24 +1,51 @@
 package com.dtdennis.currency.ui
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 
 class ConvertedCurrencyRVAdapter(
-    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit
+    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit,
+    private val onValueChangedListener: (position: Int, item: ConvertedCurrency, newValue: Double) -> Unit
 ) : RecyclerView.Adapter<ConvertedCurrencyRVAdapter.ConvertedCurrencyVH>() {
     var items: List<ConvertedCurrency> = emptyList()
         private set
 
-    class ConvertedCurrencyVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ValueTextWatcher(
+        private val position: Int,
+        private val item: ConvertedCurrency,
+        private val callback: (position: Int, item: ConvertedCurrency, newValue: Double) -> Unit
+    ) : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            val newValue = p0?.toString()?.toDouble() ?: item.value
+            callback(position, item, newValue)
+        }
+    }
+
+    class ConvertedCurrencyVH(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
         val currencyCodeTV = itemView.findViewById<TextView>(R.id.currency_code_tv)
         val currencyNameTV = itemView.findViewById<TextView>(R.id.currency_name_tv)
         val conversionET = itemView.findViewById<EditText>(R.id.conversion_et)
+
+        var valueWatcher: ValueTextWatcher? = null
     }
 
     override fun getItemCount() = items.size
@@ -56,13 +83,20 @@ class ConvertedCurrencyRVAdapter(
         holder.currencyNameTV.text = item.name
         holder.conversionET.setText(String.format("%.3f", item.value))
 
-        if(position == 0) setFirstItemTouchListeners(holder)
+        if (position == 0) setFirstItemTouchListeners(position, item, holder)
         else setNonFirstItemTouchListeners(position, item, holder)
     }
 
-    private fun setFirstItemTouchListeners(holder: ConvertedCurrencyVH) {
+    private fun setFirstItemTouchListeners(
+        position: Int,
+        item: ConvertedCurrency,
+        holder: ConvertedCurrencyVH
+    ) {
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
+
+        holder.valueWatcher = ValueTextWatcher(position, item, onValueChangedListener)
+        holder.conversionET.addTextChangedListener(holder.valueWatcher)
     }
 
     private fun setNonFirstItemTouchListeners(
@@ -80,6 +114,10 @@ class ConvertedCurrencyRVAdapter(
             }
 
             false
+        }
+
+        if (holder.valueWatcher != null) {
+            holder.conversionET.removeTextChangedListener(holder.valueWatcher)
         }
 
         holder.itemView.setOnClickListener {
