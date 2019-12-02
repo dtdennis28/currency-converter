@@ -42,11 +42,9 @@ class CurrencyRatesRepositoryImpl(
         return Observable
             .interval(SERVICE_PING_INTERVAL, PING_TIME_UNIT, schedulerProvider.io)
             .flatMap {
-                logger.d(TAG, "tick")
                 service
                     .getRates(BASE_CURRENCY)
                     .map {
-                        logger.d(TAG, "got $it")
                         // Insert the base rate into the manifest so that it's usable regardless of which
                         // currency is being converted from
                         val ratesWithBaseIncluded = it.rates.toMutableMap()
@@ -63,13 +61,9 @@ class CurrencyRatesRepositoryImpl(
 
                         memoryStorage.getRates()
                             .switchIfEmpty(diskStorage.getRates())
-                            .toSingle()
-//                            .switchIfEmpty(Single.just(defaultService.read()))
+                            .switchIfEmpty(Single.just(defaultService.read()))
                     }
                     .toObservable()
-            }
-            .doOnNext {
-                logger.d(TAG, "onNext: $it")
             }
     }
 
