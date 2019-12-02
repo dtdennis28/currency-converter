@@ -1,51 +1,24 @@
 package com.dtdennis.currency.ui
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 
 class ConvertedCurrencyRVAdapter(
-    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit,
-    private val onValueChangedListener: (position: Int, item: ConvertedCurrency, newValue: Double) -> Unit
+    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit
 ) : RecyclerView.Adapter<ConvertedCurrencyRVAdapter.ConvertedCurrencyVH>() {
-    var items: List<ConvertedCurrency> = listOf()
+    var items: List<ConvertedCurrency> = emptyList()
         private set
 
-    class ValueTextWatcher(
-        private val position: Int,
-        private val item: ConvertedCurrency,
-        private val callback: (position: Int, item: ConvertedCurrency, newValue: Double) -> Unit
-    ) : TextWatcher {
-        override fun afterTextChanged(p0: Editable?) {
-
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            val newValue = p0?.toString()?.toDouble() ?: item.value
-            callback(position, item, newValue)
-        }
-    }
-
-    class ConvertedCurrencyVH(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+    class ConvertedCurrencyVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyCodeTV = itemView.findViewById<TextView>(R.id.currency_code_tv)
         val currencyNameTV = itemView.findViewById<TextView>(R.id.currency_name_tv)
         val conversionET = itemView.findViewById<EditText>(R.id.conversion_et)
-
-        var valueWatcher: ValueTextWatcher? = null
     }
 
     override fun getItemCount() = items.size
@@ -53,9 +26,14 @@ class ConvertedCurrencyRVAdapter(
     /**
      * Full re-set of the list (e.g. backing list & view re-render)
      */
-    fun setItems(newItems: List<ConvertedCurrency>) {
-        this.items = newItems
-        notifyDataSetChanged()
+    fun setItems(items: List<ConvertedCurrency>) {
+        println("Setting items $items")
+
+        this.items = items
+
+        this.items.forEachIndexed { index, item ->
+            notifyItemChanged(index)
+        }
     }
 
     /**
@@ -64,9 +42,7 @@ class ConvertedCurrencyRVAdapter(
      */
     fun onItemMoved(newItems: List<ConvertedCurrency>, fromPosition: Int, toPosition: Int) {
         this.items = newItems
-
         notifyItemMoved(fromPosition, toPosition)
-
         this.items.forEachIndexed { index, item ->
             notifyItemChanged(index)
         }
@@ -95,13 +71,8 @@ class ConvertedCurrencyRVAdapter(
     ) {
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
-
-        // First time being the first item
-        if (holder.valueWatcher == null) {
+        if (holder.conversionET.text?.toString().isNullOrBlank()) {
             holder.conversionET.setText(String.format("%.3f", item.value))
-            holder.valueWatcher = ValueTextWatcher(position, item, onValueChangedListener)
-            holder.conversionET.addTextChangedListener(holder.valueWatcher)
-            holder.conversionET.setSelection(holder.conversionET.text.length)
         }
     }
 
@@ -122,11 +93,6 @@ class ConvertedCurrencyRVAdapter(
             }
 
             false
-        }
-
-        if (holder.valueWatcher != null) {
-            holder.conversionET.removeTextChangedListener(holder.valueWatcher)
-            holder.valueWatcher = null
         }
 
         holder.itemView.setOnClickListener {
