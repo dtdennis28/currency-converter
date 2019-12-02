@@ -1,6 +1,9 @@
 package com.dtdennis.currency.core.rates
 
+import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
+import org.reactivestreams.Publisher
 import javax.inject.Inject
 
 /**

@@ -21,8 +21,7 @@ class CurrencyRatesRepositoryImpl(
     private val schedulerProvider: SchedulerProvider,
     private val service: CurrencyRatesService,
     private val diskStorage: PrefsCurrencyRatesStorage,
-    private val memoryStorage: MemCurrencyRatesStorage,
-    private val defaultService: DefaultCurrencyRatesService
+    private val memoryStorage: MemCurrencyRatesStorage
 ) : CurrencyRatesRepository {
     /**
      * Stream the rates manifest based on the base currency provided
@@ -56,10 +55,7 @@ class CurrencyRatesRepositoryImpl(
                     .onErrorResumeNext { error: Throwable ->
                         // "Report error"
                         logger.e(TAG, error)
-
-                        memoryStorage.getRates()
-                            .switchIfEmpty(diskStorage.getRates())
-                            .switchIfEmpty(Single.just(defaultService.read()))
+                        memoryThenStorageRates().toSingle()
                     }
                     .toObservable()
             }

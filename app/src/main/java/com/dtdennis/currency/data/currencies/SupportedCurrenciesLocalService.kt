@@ -15,6 +15,7 @@ class SupportedCurrenciesLocalService(
     private val assetManager: AssetManager
 ) {
     private val parser = JsonParser()
+    private val gson = Gson()
 
     fun getSupportedCurrencies(): List<Currency> {
         var json: String? = null
