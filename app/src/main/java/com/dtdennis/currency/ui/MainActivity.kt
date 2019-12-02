@@ -2,6 +2,7 @@ package com.dtdennis.currency.ui
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -36,20 +37,28 @@ class MainActivity : AppCompatActivity() {
             this
         )
 
+        observeVM()
+    }
+
+    private fun observeVM() {
         viewModel.conversionList.observe(this,
             Observer<ConversionList> {
-                logger.d(TAG, "New conv list: $it")
-                recyclerViewCoordinator.setItems(it.lineItems)
+                if (it.lineItems.isNotEmpty()) {
+                    hideInitialLoading()
+                    recyclerViewCoordinator.setItems(it.lineItems)
+                } else {
+                    showInitialLoadingError()
+                }
             })
+    }
 
-        viewModel.fetchingError.observe(this, Observer<LiveDataEvent<String>> {
-            val errorMessage = it.getContentIfNotHandled()
+    private fun hideInitialLoading() {
+        initial_loading_container.visibility = View.GONE
+    }
 
-            if(errorMessage != null) {
-                // TODO
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-            }
-        })
+    private fun showInitialLoadingError() {
+        initial_loading_pb.visibility = View.GONE
+        initial_text.text = "An error occurred. Please try again."
     }
 
     private fun onCurrenciesRearranged(newItems: List<CurrencyLineItem>) {
