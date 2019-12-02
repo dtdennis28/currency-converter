@@ -18,7 +18,7 @@ class RecyclerViewCoordinator(
     private val onItemsRearrangedListener: (newItems: List<ConvertedCurrency>) -> Unit,
     context: Context
 ) {
-    private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked)
+    private val adapter = ConvertedCurrencyRVAdapter(::onItemClicked, ::onItemValueChanged)
     private val layoutManager = LinearLayoutManager(context)
 
     // Crude way to prevent item changes while animating

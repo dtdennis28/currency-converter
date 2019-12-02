@@ -1,5 +1,7 @@
 package com.dtdennis.currency.ui
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -10,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 
 class ConvertedCurrencyRVAdapter(
-    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit
+    private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit,
+    private val onValueChangeListener: (position: Int, item: ConvertedCurrency, value: Double) -> Unit
 ) : RecyclerView.Adapter<ConvertedCurrencyRVAdapter.ConvertedCurrencyVH>() {
     var items: List<ConvertedCurrency> = emptyList()
         private set
@@ -19,6 +22,30 @@ class ConvertedCurrencyRVAdapter(
         val currencyCodeTV = itemView.findViewById<TextView>(R.id.currency_code_tv)
         val currencyNameTV = itemView.findViewById<TextView>(R.id.currency_name_tv)
         val conversionET = itemView.findViewById<EditText>(R.id.conversion_et)
+
+        var textWatcher: TextWatcher? = null
+    }
+
+    class ValueTextWatcher(
+        private val valueChangeCallback: (newValue: Double) -> Unit
+    ) : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            val newValue = if (p0.isNullOrBlank()) {
+                0.0
+            } else {
+                p0.toString().toDouble()
+            }
+
+            valueChangeCallback(newValue)
+        }
     }
 
     override fun getItemCount() = items.size
@@ -27,10 +54,10 @@ class ConvertedCurrencyRVAdapter(
      * Full re-set of the list (e.g. backing list & view re-render)
      */
     fun setItems(items: List<ConvertedCurrency>) {
-        println("Setting items $items")
-
         this.items = items
 
+        // Use notifyItemChanged over notifyDataSetChanged to keep from re-render glitches
+        // Note: this will fail if the back-end adds new currencies into the list
         this.items.forEachIndexed { index, item ->
             notifyItemChanged(index)
         }
@@ -60,27 +87,41 @@ class ConvertedCurrencyRVAdapter(
         holder.currencyCodeTV.text = item.code
         holder.currencyNameTV.text = item.name
 
-        if (position == 0) setFirstItemTouchListeners(position, item, holder)
-        else setNonFirstItemTouchListeners(position, item, holder)
+        if (position == 0) bindFirstItem(position, item, holder)
+        else bindNonFirstItem(position, item, holder)
     }
 
-    private fun setFirstItemTouchListeners(
+    private fun bindFirstItem(
         position: Int,
         item: ConvertedCurrency,
         holder: ConvertedCurrencyVH
     ) {
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
-        if (holder.conversionET.text?.toString().isNullOrBlank()) {
+
+        if (!holder.conversionET.hasFocus()) {
             holder.conversionET.setText(String.format("%.3f", item.value))
+            holder.conversionET.setSelection(holder.conversionET.text.length)
+        }
+
+        if (holder.textWatcher == null) {
+            holder.textWatcher = ValueTextWatcher {
+                onValueChangeListener(position, item, it)
+            }
+            holder.conversionET.addTextChangedListener(holder.textWatcher)
         }
     }
 
-    private fun setNonFirstItemTouchListeners(
+    private fun bindNonFirstItem(
         position: Int,
         item: ConvertedCurrency,
         holder: ConvertedCurrencyVH
     ) {
+        if(holder.textWatcher != null) {
+            holder.conversionET.removeTextChangedListener(holder.textWatcher)
+            holder.textWatcher = null
+        }
+
         holder.conversionET.setText(String.format("%.3f", item.value))
 
         // Override on-touch action-up to treat the "click" on the ET the same as an item click
@@ -101,6 +142,7 @@ class ConvertedCurrencyRVAdapter(
             // The only reason one would click the row would be to edit its conversion ET,
             // So immediately request focus
             holder.conversionET.requestFocus()
+            holder.conversionET.setSelection(holder.conversionET.text.length)
         }
     }
 }
