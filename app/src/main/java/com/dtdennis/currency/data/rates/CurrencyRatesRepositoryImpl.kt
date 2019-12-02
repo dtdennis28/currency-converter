@@ -77,10 +77,4 @@ class CurrencyRatesRepositoryImpl(
             .andThen(memoryStorage.setRates(newRates))
             .andThen(Single.just(newRates))
     }
-
-
-    private fun memoryThenStorageRates(): Maybe<CurrencyRatesManifest> {
-        return memoryStorage.getRates()
-            .switchIfEmpty(diskStorage.getRates())
-    }
 }
