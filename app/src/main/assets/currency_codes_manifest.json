@@ -1,35 +1,266 @@
-{
-  "AUD": "Australian Dollar",
-  "BGN": "Bulgarian Lev",
-  "BRL": "Brazilian Real",
-  "CAD": "Canadian Dollar",
-  "CHF": "Swiss Franc",
-  "CNY": "Chinese Yuan",
-  "CZK": "Czech Koruna",
-  "DKK": "Danish Krone",
-  "EUR": "Euro",
-  "GBP": "British Pound",
-  "HKD": "Hong Kong Dollar",
-  "HRK": "Croatian Kuna",
-  "HUF": "Hungarian Forint",
-  "IDR": "Indonesian Rupiah",
-  "ILS": "Israeli New Shekel",
-  "INR": "Indian Rupee",
-  "ISK": "Icelandic Króna",
-  "JPY": "Japanese Yen",
-  "KRW": "South Korean Won",
-  "MXN": "Mexican Peso",
-  "MYR": "Malaysian Ringgit",
-  "NOK": "Norwegian Krone",
-  "NZD": "New Zealand Dollar",
-  "PHP": "Philippine Peso",
-  "PLN": "Polish złoty",
-  "RON": "Romanian Leu",
-  "RUB": "Russian Ruble",
-  "SEK": "Swedish Krona",
-  "SGD": "Singapore Dollar",
-  "THB": "Thai Baht",
-  "TRY": "Turkish Lira",
-  "USD": "US Dollar",
-  "ZAR": "South African Rand"
-}
+[
+  {
+    "code": "AUD",
+    "name": "Australian Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_aud"
+    }
+  },
+  {
+    "code": "BGN",
+    "name": "Bulgarian Lev",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_bgn"
+    }
+  },
+  {
+    "code": "BRL",
+    "name": "Brazilian Real",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_brl"
+    }
+  },
+  {
+    "code": "CAD",
+    "name": "Canadian Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_cad"
+    }
+  },
+  {
+    "code": "CHF",
+    "name": "Swiss Franc",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_chf"
+    }
+  },
+  {
+    "code": "CNY",
+    "name": "Chinese Yuan",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_cny"
+    }
+  },
+  {
+    "code": "CZK",
+    "name": "Czech Koruna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_czk"
+    }
+  },
+  {
+    "code": "DKK",
+    "name": "Danish Krone",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_dkk"
+    }
+  },
+  {
+    "code": "EUR",
+    "name": "Euro",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_eur"
+    }
+  },
+  {
+    "code": "GBP",
+    "name": "British Pound",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_gbp"
+    }
+  },
+  {
+    "code": "HKD",
+    "name": "Hong Kong Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_hkd"
+    }
+  },
+  {
+    "code": "HRK",
+    "name": "Croatian Kuna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_hrk"
+    }
+  },
+  {
+    "code": "HUF",
+    "name": "Hungarian Forint",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_huf"
+    }
+  },
+  {
+    "code": "IDR",
+    "name": "Indonesian Rupiah",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_idr"
+    }
+  },
+  {
+    "code": "ILS",
+    "name": "Israli New Shekel",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_ils"
+    }
+  },
+  {
+    "code": "INR",
+    "name": "Indian Rupee",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_inr"
+    }
+  },
+  {
+    "code": "ISK",
+    "name": "Icelandic Króna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_isk"
+    }
+  },
+  {
+    "code": "JPY",
+    "name": "Japanese Yen",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_jpy"
+    }
+  },
+  {
+    "code": "KRW",
+    "name": "South Korean Won",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_krw"
+    }
+  },
+  {
+    "code": "MXN",
+    "name": "Mexican Peso",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_mxn"
+    }
+  },
+  {
+    "code": "MYR",
+    "name": "Malaysian Ringgit",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_myr"
+    }
+  },
+  {
+    "code": "NOK",
+    "name": "Norwegian Krone",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_nok"
+    }
+  },
+  {
+    "code": "NZD",
+    "name": "New Zealand Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_nzd"
+    }
+  },
+  {
+    "code": "PHP",
+    "name": "Philippine Peso",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_php"
+    }
+  },
+  {
+    "code": "PLN",
+    "name": "Polish Złoty",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_pln"
+    }
+  },
+  {
+    "code": "RON",
+    "name": "Romanian Leu",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_ron"
+    }
+  },
+  {
+    "code": "RUB",
+    "name": "Russian Ruble",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_rub"
+    }
+  },
+  {
+    "code": "SEK",
+    "name": "Swedish Krona",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_sek"
+    }
+  },
+  {
+    "code": "SGD",
+    "name": "Singapore Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_sgd"
+    }
+  },
+  {
+    "code": "THB",
+    "name": "Thai Baht",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_thb"
+    }
+  },
+  {
+    "code": "TRY",
+    "name": "Turkish Lira",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_try"
+    }
+  },
+  {
+    "code": "USD",
+    "name": "US Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_usd"
+    }
+  },
+  {
+    "code": "ZAR",
+    "name": "South African Rand",
+    "icon": {
+      "type": "LOCAL",
+      "location": "R.drawable.ic_zar"
+    }
+  }
+]
