@@ -16,7 +16,7 @@ class ConvertedCurrencyRVAdapter(
     private val onItemClickListener: (position: Int, item: ConvertedCurrency, itemView: View) -> Unit,
     private val onValueChangedListener: (position: Int, item: ConvertedCurrency, newValue: Double) -> Unit
 ) : RecyclerView.Adapter<ConvertedCurrencyRVAdapter.ConvertedCurrencyVH>() {
-    var items: List<ConvertedCurrency> = emptyList()
+    var items: List<ConvertedCurrency> = listOf()
         private set
 
     class ValueTextWatcher(
@@ -53,8 +53,8 @@ class ConvertedCurrencyRVAdapter(
     /**
      * Full re-set of the list (e.g. backing list & view re-render)
      */
-    fun setItems(items: List<ConvertedCurrency>) {
-        this.items = items
+    fun setItems(newItems: List<ConvertedCurrency>) {
+        this.items = newItems
         notifyDataSetChanged()
     }
 
@@ -64,7 +64,9 @@ class ConvertedCurrencyRVAdapter(
      */
     fun onItemMoved(newItems: List<ConvertedCurrency>, fromPosition: Int, toPosition: Int) {
         this.items = newItems
+
         notifyItemMoved(fromPosition, toPosition)
+
         this.items.forEachIndexed { index, item ->
             notifyItemChanged(index)
         }
@@ -81,7 +83,6 @@ class ConvertedCurrencyRVAdapter(
 
         holder.currencyCodeTV.text = item.code
         holder.currencyNameTV.text = item.name
-        holder.conversionET.setText(String.format("%.3f", item.value))
 
         if (position == 0) setFirstItemTouchListeners(position, item, holder)
         else setNonFirstItemTouchListeners(position, item, holder)
@@ -95,8 +96,13 @@ class ConvertedCurrencyRVAdapter(
         holder.conversionET.setOnTouchListener(null)
         holder.itemView.setOnClickListener(null)
 
-        holder.valueWatcher = ValueTextWatcher(position, item, onValueChangedListener)
-        holder.conversionET.addTextChangedListener(holder.valueWatcher)
+        // First time being the first item
+        if (holder.valueWatcher == null) {
+            holder.conversionET.setText(String.format("%.3f", item.value))
+            holder.valueWatcher = ValueTextWatcher(position, item, onValueChangedListener)
+            holder.conversionET.addTextChangedListener(holder.valueWatcher)
+            holder.conversionET.setSelection(holder.conversionET.text.length)
+        }
     }
 
     private fun setNonFirstItemTouchListeners(
@@ -104,6 +110,8 @@ class ConvertedCurrencyRVAdapter(
         item: ConvertedCurrency,
         holder: ConvertedCurrencyVH
     ) {
+        holder.conversionET.setText(String.format("%.3f", item.value))
+
         // Override on-touch action-up to treat the "click" on the ET the same as an item click
         // This will leave it so that all clicks, regardless of which child item is touched,
         // are treated the same (e.g. to rearrange items upon click, to focus the ET, etc.)
@@ -118,6 +126,7 @@ class ConvertedCurrencyRVAdapter(
 
         if (holder.valueWatcher != null) {
             holder.conversionET.removeTextChangedListener(holder.valueWatcher)
+            holder.valueWatcher = null
         }
 
         holder.itemView.setOnClickListener {

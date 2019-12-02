@@ -24,7 +24,7 @@ class RecyclerViewCoordinator(
 
     fun setItems(items: List<ConvertedCurrency>) = adapter.setItems(items)
 
-    fun onItemClicked(position: Int, item: ConvertedCurrency, itemView: View) {
+    private fun onItemClicked(position: Int, item: ConvertedCurrency, itemView: View) {
         val rearrangedList = adapter.items.toMutableList()
         rearrangedList.removeAt(position)
         rearrangedList.add(0, item)
@@ -33,7 +33,7 @@ class RecyclerViewCoordinator(
         onItemsRearrangedListener(rearrangedList)
     }
 
-    fun onItemValueChanged(position: Int, item: ConvertedCurrency, value: Double) {
+    private fun onItemValueChanged(position: Int, item: ConvertedCurrency, value: Double) {
         val newItems = adapter.items.toMutableList()
         newItems.removeAt(0)
         newItems.add(0, item.copy(value = value))
