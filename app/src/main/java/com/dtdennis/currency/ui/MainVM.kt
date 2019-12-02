@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 private const val TAG = "MainVM"
 private const val DEFAULT_CURRENCY_CODE = "EUR"
+private const val DEFAULT_CURRENCY_NAME = "Euro"
 private const val DEFAULT_VALUE = 1.0
 
 class MainVM @Inject constructor(
@@ -29,13 +30,21 @@ class MainVM @Inject constructor(
     private val currencyRatesInteractor: CurrencyRatesInteractor
 ) : ViewModel() {
     private val DEFAULT_BASELINE = UserBaseline(
-        DEFAULT_CURRENCY_CODE, DEFAULT_VALUE, mapOf(
+        DEFAULT_CURRENCY_CODE,
+        DEFAULT_CURRENCY_NAME,
+        DEFAULT_VALUE,
+        mapOf(
             DEFAULT_CURRENCY_CODE to 0
         )
     )
 
     private val currentBaselineSub = PublishSubject.create<UserBaseline>()
     private val currentBaselineObs = currentBaselineSub.startWith(DEFAULT_BASELINE)
+
+    // Not super reactive/functional (probably a more sophisticated way via Rx),
+    // But this is a quick and easy way to do an immediate recalculation when the baseline changes
+    // (as opposed to waiting for the interactor/repository to return a new manifest)
+    private var latestStreams: Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>? = null
 
     private val conversionListFlowable =
         Observable.interval(1L, TimeUnit.SECONDS, Schedulers.io())
@@ -61,9 +70,19 @@ class MainVM @Inject constructor(
 
     val conversionList = LiveDataReactiveStreams.fromPublisher(conversionListFlowable)
 
-    fun onBaselineChanged(newUserBaseline: UserBaseline) {
+    /**
+     * Immediately return the re-converted item without waiting for a new manifest
+     */
+    fun onBaselineChanged(newUserBaseline: UserBaseline): ConversionList? {
         logger.d(TAG, "Baseline updated: $newUserBaseline")
+
         currentBaselineSub.onNext(newUserBaseline)
+
+        if(latestStreams != null) {
+            return composeConversionList(latestStreams!!)
+        }
+
+        return null
     }
 
     private fun combineDataStreams(baselineAndManifest: Pair<UserBaseline, CurrencyRatesManifest>): Observable<Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>> {
@@ -72,7 +91,9 @@ class MainVM @Inject constructor(
             .getSupportedCurrencies()
             .toObservable()
             .map { supportedCurrencies ->
-                Triple(baseline, manifest, supportedCurrencies.associateBy { it.code })
+                // Maintain state for quick conversion
+                latestStreams = Triple(baseline, manifest, supportedCurrencies.associateBy { it.code })
+                return@map latestStreams
             }
     }
 

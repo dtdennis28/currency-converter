@@ -38,10 +38,10 @@ class ConvertedCurrencyRVAdapter(
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            val newValue = if (p0.isNullOrBlank()) {
+            val newValue = try {
+                p0?.toString()?.toDouble() ?: throw Exception()
+            } catch (error: Throwable) {
                 0.0
-            } else {
-                p0.toString().toDouble()
             }
 
             valueChangeCallback(newValue)

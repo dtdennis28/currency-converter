@@ -1,6 +1,7 @@
 package com.dtdennis.currency.ui
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dtdennis.currency.CurrencyApplication
@@ -54,12 +55,29 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-        viewModel.onBaselineChanged(
+        val immediateConverionList = viewModel.onBaselineChanged(
             UserBaseline(
                 base.code,
+                base.name,
                 base.value,
                 positions
             )
         )
+
+        // We have an immediate conversion to display
+        // Posting w/ delay because otherwise it will try to call "setItems" while recyclerview
+        // is still scrolling / animating
+        if (immediateConverionList != null) {
+            Handler().postDelayed(
+                {
+                    recyclerViewCoordinator.setItems(
+                        immediateConverionList.lineItems.map {
+                            ConvertedCurrency(it.code, it.name, it.value)
+                        }
+                    )
+                },
+                1
+            )
+        }
     }
 }
