@@ -8,10 +8,12 @@ import com.dtdennis.currency.core.currencies.Currency
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
+import com.dtdennis.currency.core.rates.LocalCurrencyRatesInteractor
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.util.LiveDataEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -26,7 +28,8 @@ private const val DEFAULT_VALUE = 1.0
 class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
-    private val currencyRatesInteractor: CurrencyRatesInteractor
+    private val currencyRatesInteractor: CurrencyRatesInteractor,
+    private val localCurrencyRatesInteractor: LocalCurrencyRatesInteractor
 ) : ViewModel() {
     private val DEFAULT_BASELINE = UserBaseline(
         DEFAULT_CURRENCY_CODE,
@@ -43,7 +46,8 @@ class MainVM @Inject constructor(
     // Not super reactive/functional (probably a more sophisticated way via Rx),
     // But this is a quick and easy way to do an immediate recalculation when the baseline changes
     // (as opposed to waiting for the interactor/repository to return a new manifest)
-    private var latestStreams: Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>? = null
+    private var latestStreams: Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>? =
+        null
 
     private val conversionListFlowable =
         Observable.interval(1L, TimeUnit.SECONDS, Schedulers.io())
@@ -53,24 +57,13 @@ class MainVM @Inject constructor(
                     return@BiFunction baseline
                 }
             )
-            .flatMapSingle { baseline ->
-                currencyRatesInteractor
-                    .getRates(baseline.code)
-                    .map { manifest ->
-                        Pair(baseline, manifest)
-                    }
-            }
+            .flatMapSingle(::getRatesWithLocalConversion)
             .flatMap(::combineDataStreams)
             .map(::composeConversionList)
             .toFlowable(BackpressureStrategy.LATEST)
             .onErrorReturn {
-                logger.e(TAG, it)
-
-                if(latestStreams != null) {
-                    composeConversionList(latestStreams!!)
-                } else {
-                    ConversionList(DEFAULT_BASELINE, emptyList())
-                }
+                logger.d(TAG, "Unable to do any sort of conversions. Returning empty list")
+                ConversionList(DEFAULT_BASELINE, emptyList())
             }
 
     val conversionList = LiveDataReactiveStreams.fromPublisher(conversionListFlowable)
@@ -83,11 +76,38 @@ class MainVM @Inject constructor(
 
         currentBaselineSub.onNext(newUserBaseline)
 
-        if(latestStreams != null) {
+        if (latestStreams != null) {
             return composeConversionList(latestStreams!!)
         }
 
         return null
+    }
+
+    private fun getRatesWithLocalConversion(baseline: UserBaseline): Single<Pair<UserBaseline, CurrencyRatesManifest>> {
+        return currencyRatesInteractor
+            .getRates(baseline.code)
+            .map { manifest ->
+                Pair(baseline, manifest)
+            }
+            .onErrorReturn {
+                handleGetRatesError(baseline, it)
+            }
+    }
+
+    private fun handleGetRatesError(attemptedBaseline: UserBaseline, error: Throwable): Pair<UserBaseline, CurrencyRatesManifest> {
+        logger.e(TAG, error)
+
+        return if (latestStreams != null) {
+            logger.d(TAG, "Doing local conversion")
+            val newManifest =
+                localCurrencyRatesInteractor
+                    .rebaseCurrencyRatesManifest(
+                        attemptedBaseline.code,
+                        latestStreams!!.second
+                    )
+
+            Pair(attemptedBaseline, newManifest)
+        } else throw error
     }
 
     private fun combineDataStreams(baselineAndManifest: Pair<UserBaseline, CurrencyRatesManifest>): Observable<Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>> {
@@ -97,7 +117,8 @@ class MainVM @Inject constructor(
             .toObservable()
             .map { supportedCurrencies ->
                 // Maintain state for quick conversion
-                latestStreams = Triple(baseline, manifest, supportedCurrencies.associateBy { it.code })
+                latestStreams =
+                    Triple(baseline, manifest, supportedCurrencies.associateBy { it.code })
                 return@map latestStreams
             }
     }
