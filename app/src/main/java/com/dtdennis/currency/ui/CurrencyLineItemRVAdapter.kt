@@ -141,6 +141,8 @@ class CurrencyLineItemRVAdapter(
             holder.conversionET.setText(String.format("%.3f", item.value))
             holder.conversionET.setTextColor(Color.BLACK)
             holder.conversionET.setSelection(holder.conversionET.text.length)
+        } else {
+            holder.conversionET.setTextColor(holder.itemView.resources.getColor(R.color.colorAccent))
         }
 
         if (holder.textWatcher == null) {
