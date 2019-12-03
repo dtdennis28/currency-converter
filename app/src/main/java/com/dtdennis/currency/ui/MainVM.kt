@@ -9,13 +9,13 @@ import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.dtdennis.currency.data.util.Logger
+import com.dtdennis.currency.ui.entities.ConversionList
+import com.dtdennis.currency.ui.entities.CurrencyLineItem
+import com.dtdennis.currency.ui.entities.UserBaseline
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val TAG = "MainVM"
@@ -152,6 +152,11 @@ class MainVM @Inject constructor(
 
         val currency = getCurrency(toCode, supportedCurrencies)
 
-        return CurrencyLineItem(toCode, currency.name, currency.icon, convertedValue)
+        return CurrencyLineItem(
+            toCode,
+            currency.name,
+            currency.icon,
+            convertedValue
+        )
     }
 }

@@ -75,14 +75,21 @@ dependencies {
 }
 
 jacocoAndroidUnitTestReport {
-    excludes += ['**/*_Factory**',
-                 '**/internal/**',
+    excludes +=
+            [// Dagger factories
+             '**/*_Factory**',
 
-                 // Who unit tests RecyclerView code...
-                 '**/ui/**RV**',
-                 '**/ui/**RecyclerView**',
+             // Internal package, not typically testable
+             '**/internal/**',
 
-                 'com/dtdennis/currency/util/**']
+             // These are just data classes, typically used for RecyclerViews, etc.
+             '**/ui/entities/**',
+
+             // Who unit tests RecyclerView code...
+             '**/ui/recyclerview/**',
+
+             // Not typically testable code
+             'com/dtdennis/currency/util/**']
 }
 
 jacocoBadgeGenSetting {

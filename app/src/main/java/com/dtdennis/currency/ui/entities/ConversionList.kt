@@ -1,4 +1,4 @@
-package com.dtdennis.currency.ui
+package com.dtdennis.currency.ui.entities
 
 data class ConversionList(
     val baseline: UserBaseline,

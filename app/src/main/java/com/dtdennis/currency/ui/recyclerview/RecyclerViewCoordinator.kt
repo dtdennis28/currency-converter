@@ -1,4 +1,4 @@
-package com.dtdennis.currency.ui
+package com.dtdennis.currency.ui.recyclerview
 
 import android.content.Context
 import android.os.Handler
@@ -6,6 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.dtdennis.currency.ui.entities.CurrencyLineItem
 
 /**
  * Cluster all the RV mgmt into a "coordinator" to keep activity clean
@@ -17,7 +18,10 @@ class RecyclerViewCoordinator(
     private val onItemsRearrangedListener: (newItems: List<CurrencyLineItem>) -> Unit,
     context: Context
 ) {
-    private val adapter = CurrencyLineItemRVAdapter(::onItemClicked, ::onItemValueChanged)
+    private val adapter = CurrencyLineItemRVAdapter(
+        ::onItemClicked,
+        ::onItemValueChanged
+    )
     private val layoutManager = LinearLayoutManager(context)
 
     // Crude way to prevent item changes while animating

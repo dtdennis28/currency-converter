@@ -1,4 +1,4 @@
-package com.dtdennis.currency.ui
+package com.dtdennis.currency.ui.entities
 
 data class UserBaseline(
     val code: String,

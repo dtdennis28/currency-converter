@@ -1,4 +1,4 @@
-package com.dtdennis.currency.ui
+package com.dtdennis.currency.ui.recyclerview
 
 import android.content.Context
 import android.graphics.Color
@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 import com.dtdennis.currency.core.currencies.CurrencyIcon
+import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import com.dtdennis.currency.ui.util.ResourceIdFetcher
 import com.squareup.picasso.Picasso
 
@@ -147,9 +148,10 @@ class CurrencyLineItemRVAdapter(
         }
 
         if (holder.textWatcher == null) {
-            holder.textWatcher = ValueTextWatcher {
-                onValueChangeListener(position, item, it)
-            }
+            holder.textWatcher =
+                ValueTextWatcher {
+                    onValueChangeListener(position, item, it)
+                }
             holder.conversionET.addTextChangedListener(holder.textWatcher)
         }
     }
