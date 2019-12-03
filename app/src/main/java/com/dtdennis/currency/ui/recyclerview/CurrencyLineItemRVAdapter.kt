@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 import com.dtdennis.currency.core.currencies.CurrencyIcon
+import com.dtdennis.currency.ui.CurrencyValueFormatter
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import com.dtdennis.currency.ui.util.ResourceIdFetcher
 import com.squareup.picasso.Picasso
@@ -95,30 +96,10 @@ class CurrencyLineItemRVAdapter(
     override fun onBindViewHolder(holder: CurrencyLineItemVH, position: Int) {
         val item = items[position]
 
-        bindIcon(item, holder)
-
-        holder.currencyCodeTV.text = item.code
-        holder.currencyNameTV.text = item.name
+        bindBasics(item, holder)
 
         if (position == 0) bindFirstItem(position, item, holder)
         else bindNonFirstItem(position, item, holder)
-    }
-
-    private fun bindIcon(item: CurrencyLineItem, holder: CurrencyLineItemVH) {
-        // Load the icon based on local or remote
-        if (item.icon.type == CurrencyIcon.Type.LOCAL) {
-            picasso.load(
-                ResourceIdFetcher.getDrawableResIdFromResName(
-                    holder.itemView.context,
-                    item.icon.location,
-                    R.drawable.ic_currency_generic
-                )
-            )
-                .fit()
-                .into(holder.currencyIconIV)
-        } else {
-            picasso.load(item.icon.location).into(holder.currencyIconIV)
-        }
     }
 
     private fun bindFirstItem(
@@ -130,8 +111,8 @@ class CurrencyLineItemRVAdapter(
         holder.itemView.setOnClickListener(null)
 
         holder.conversionET.setOnFocusChangeListener { view, hasFocus ->
-            if(!hasFocus) {
-                holder.conversionET.setText(String.format("%.3f", item.value))
+            if (!hasFocus) {
+                bindValue(item.value, holder)
                 holder.conversionET.setTextColor(Color.BLACK)
                 hideKeyboard(holder.conversionET)
             } else {
@@ -139,8 +120,8 @@ class CurrencyLineItemRVAdapter(
             }
         }
 
-        if(!holder.conversionET.hasFocus()) {
-            holder.conversionET.setText(String.format("%.3f", item.value))
+        if (!holder.conversionET.hasFocus()) {
+            bindValue(item.value, holder)
             holder.conversionET.setTextColor(Color.BLACK)
             holder.conversionET.setSelection(holder.conversionET.text.length)
         } else {
@@ -157,7 +138,8 @@ class CurrencyLineItemRVAdapter(
     }
 
     private fun hideKeyboard(editText: View) {
-        val imm =  editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
@@ -173,7 +155,7 @@ class CurrencyLineItemRVAdapter(
 
         holder.conversionET.onFocusChangeListener = null
 
-        holder.conversionET.setText(String.format("%.3f", item.value))
+        bindValue(item.value, holder)
         holder.conversionET.setTextColor(Color.BLACK)
 
         // Override on-touch action-up to treat the "click" on the ET the same as an item click
@@ -197,5 +179,35 @@ class CurrencyLineItemRVAdapter(
             holder.conversionET.setSelection(holder.conversionET.text.length)
             holder.conversionET.setTextColor(holder.itemView.resources.getColor(R.color.colorAccent))
         }
+    }
+
+    private fun bindBasics(
+        item: CurrencyLineItem,
+        holder: CurrencyLineItemVH
+    ) {
+        bindIcon(item, holder)
+        holder.currencyCodeTV.text = item.code
+        holder.currencyNameTV.text = item.name
+    }
+
+    private fun bindIcon(item: CurrencyLineItem, holder: CurrencyLineItemVH) {
+        // Load the icon based on local or remote
+        if (item.icon.type == CurrencyIcon.Type.LOCAL) {
+            picasso.load(
+                ResourceIdFetcher.getDrawableResIdFromResName(
+                    holder.itemView.context,
+                    item.icon.location,
+                    R.drawable.ic_currency_generic
+                )
+            )
+                .fit()
+                .into(holder.currencyIconIV)
+        } else {
+            picasso.load(item.icon.location).into(holder.currencyIconIV)
+        }
+    }
+
+    private fun bindValue(value: Double, holder: CurrencyLineItemVH) {
+        holder.conversionET.setText(CurrencyValueFormatter.format(value))
     }
 }
