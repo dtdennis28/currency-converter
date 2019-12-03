@@ -7,6 +7,8 @@
 Welcome to Rates! Drew Dennis's rise to the Revolut interview challenge to create a real-time,
 production-ready currency converter.
 
+This is a personal showcase of my development abilities and an extension of my craft.
+
 # App features
 - Allows you to convert from one currency to dozens more
 - Fetches the latest currency conversion rates every 1-sec, and updates the screen immediately.
@@ -159,6 +161,36 @@ Signing is currently the typical local-keystore-based signing.
 
 ## Libraries
 You can see a functional list of all libraries used by opening `buildSrc/src/main/java/Dependencies.kt`
+
+### BUZZ WORDS: Modern Android languages/tools/frameworks/patterns used
+
+- Dagger 2
+
+- RxJava 2
+
+- Retrofit
+
+- Picasso
+
+- AndroidX
+
+- AndroidX arch - Lifecycle / LiveData
+
+- MVVM
+
+- Clean code
+
+- Repository pattern
+
+- Kotlin
+
+- Code coverage
+
+- ConstraintLayout
+
+- RecyclerView
+
+- Robolectric
 
 # Acknowledgments
 There are plenty of libraries, for which I am not yet taking the time to copy/paste their licenses
