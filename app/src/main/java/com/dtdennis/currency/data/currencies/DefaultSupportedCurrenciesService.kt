@@ -17,7 +17,7 @@ class DefaultSupportedCurrenciesService(
 ) {
     private val gson = Gson()
 
-    fun getSupportedCurrencies(): List<Currency> {
+    fun read(): List<Currency> {
         var json: String? = null
 
         assetManager

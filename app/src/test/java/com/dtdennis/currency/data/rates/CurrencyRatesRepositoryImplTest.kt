@@ -1,17 +1,20 @@
 package com.dtdennis.currency.data.rates
 
-import com.dtdennis.currency.util.mothers.CurrencyRatesManifestMother
-import com.dtdennis.currency.util.mothers.LoggerMother.TEST_LOGGER
-import com.dtdennis.currency.util.mothers.SchedulerProviderMother
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.dtdennis.currency.data.rates.storage.MemCurrencyRatesStorage
 import com.dtdennis.currency.data.rates.storage.PrefsCurrencyRatesStorage
 import com.dtdennis.currency.util.TestSharedPrefs
+import com.dtdennis.currency.util.mothers.CurrencyRatesManifestMother
+import com.dtdennis.currency.util.mothers.LoggerMother.TEST_LOGGER
+import com.dtdennis.currency.util.mothers.SchedulerProviderMother
 import com.google.gson.Gson
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Single
+import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.TestScheduler
-import io.reactivex.subscribers.TestSubscriber
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -28,12 +31,17 @@ class CurrencyRatesRepositoryImplTest {
     private val testSchedulerProvider = SchedulerProviderMother.testSchedulerProvider()
     private val testScheduler = testSchedulerProvider.io
 
+    private val mockDefaultCurrencyRatesService = mock<DefaultCurrencyRatesService>{
+        on { read() } doReturn CurrencyRatesManifestMother.defaultTestCurrencyRatesManifest()
+    }
+
     private val repo = CurrencyRatesRepositoryImpl(
         TEST_LOGGER,
         testSchedulerProvider,
         testDataSource.networkRatesService,
         testDataSource.diskRatesStorage,
-        testDataSource.memRatesStorage
+        testDataSource.memRatesStorage,
+        mockDefaultCurrencyRatesService
     )
 
     @Before
@@ -46,7 +54,7 @@ class CurrencyRatesRepositoryImplTest {
         // Given data source is available
         // When streaming rates
         // Then receive a new manifest every second
-        val subscriber = testStream(testNetworkRates.base)
+        val subscriber = testStream()
 
         for (i in 0..10) {
             testScheduler.advance()
@@ -61,7 +69,7 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setMemRates(null)
 
         // When streaming rates
-        val subscriber = testStream(testNetworkRates.base)
+        val subscriber = testStream()
         testScheduler.advance()
 
         // Then receive the cached manifest
@@ -74,7 +82,7 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setNetworkRates(null)
 
         // When streaming
-        val subscriber = testStream(testNetworkRates.base)
+        val subscriber = testStream()
         testScheduler.advance()
 
         // Then receive in-mem manifest
@@ -88,11 +96,14 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setNetworkRates(testNetworkRates)
 
         // When stream rates
-        testStream(testNetworkRates.base)
+        testStream()
         testScheduler.advance()
 
         // Then rates stored
-        assertThat(testDataSource.diskRatesStorage.getRates().blockingGet(), equalTo(testNetworkRates))
+        assertThat(
+            testDataSource.diskRatesStorage.getRates().blockingGet(),
+            equalTo(testNetworkRates)
+        )
     }
 
     @Test
@@ -102,11 +113,14 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setNetworkRates(testNetworkRates)
 
         // When stream rates
-        testStream(testNetworkRates.base)
+        testStream()
         testScheduler.advance()
 
         // Then rates stored
-        assertThat(testDataSource.memRatesStorage.getRates().blockingGet(), equalTo(testNetworkRates))
+        assertThat(
+            testDataSource.memRatesStorage.getRates().blockingGet(),
+            equalTo(testNetworkRates)
+        )
     }
 
     @Test
@@ -119,7 +133,7 @@ class CurrencyRatesRepositoryImplTest {
         /* Fetch new rates */
         val newRates = testNetworkRates.copy(date = testNetworkRates.date + "+1")
         testDataSource.setNetworkRates(newRates)
-        testStream(testNetworkRates.base)
+        testStream()
         testScheduler.advance()
 
         /* Make service unavailable */
@@ -129,7 +143,7 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setMemRates(null)
 
         // When rates are fetched again
-        val subscriber = testStream(testNetworkRates.base)
+        val subscriber = testStream()
         testScheduler.advance()
 
         // Then the latest rates are still obtained (because they were stored in disk)
@@ -142,9 +156,9 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.setMemRates(testMemRates)
     }
 
-    private fun testStream(baseCurrency: String): TestSubscriber<CurrencyRatesManifest> {
+    private fun testStream(): TestObserver<CurrencyRatesManifest> {
         return repo
-            .streamRates(baseCurrency)
+            .streamRates()
             .subscribeOn(testScheduler)
             .observeOn(testScheduler)
             .test()

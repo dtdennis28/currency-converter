@@ -1,19 +1,16 @@
 package com.dtdennis.currency.core.rates
 
 import com.dtdennis.currency.util.mothers.CurrencyRatesManifestMother
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.reactivestreams.Publisher
 
 /**
  * The class-under-test is really simple. Just putting a simple test in here that will break
  * once functionality of the class changes
  */
 class CurrencyRatesInteractorTest {
-    private val testBaseCurrency = CurrencyRatesManifestMother.DEFAULT_BASE_CURRENCY
     private val testManifest = CurrencyRatesManifestMother.defaultTestCurrencyRatesManifest()
 
     private val testRepo = DummyCurrencyRatesRepository(testManifest)
@@ -33,7 +30,7 @@ class CurrencyRatesInteractorTest {
         // When request rates
         // Then expect the same exact manifest
         interactor
-            .streamRates(testBaseCurrency)
+            .streamRates()
             .test()
             .assertValue(testManifest)
     }
@@ -46,7 +43,7 @@ class CurrencyRatesInteractorTest {
         // When request rates
         // Then expect an error to propagate
         interactor
-            .streamRates(testBaseCurrency)
+            .streamRates()
             .test()
             .assertError(Throwable::class.java)
     }
@@ -54,22 +51,14 @@ class CurrencyRatesInteractorTest {
 
 class DummyCurrencyRatesRepository(private var manifest: CurrencyRatesManifest? = null) :
     CurrencyRatesRepository {
-    override fun streamRates(baseCurrency: String): Flowable<CurrencyRatesManifest> {
+    override fun streamRates(): Observable<CurrencyRatesManifest> {
         return Single.create<CurrencyRatesManifest> { emitter ->
             if (manifest !== null) {
                 emitter.onSuccess(manifest!!)
             } else {
                 emitter.onError(Error("No manifest available"))
             }
-        }.toFlowable()
-    }
-
-    override fun getRates(baseCurrency: String): Single<CurrencyRatesManifest> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun streamRates(basePublisher: Observable<String>): Flowable<CurrencyRatesManifest> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }.toObservable()
     }
 
     fun setManifest(manifest: CurrencyRatesManifest? = null) {

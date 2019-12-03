@@ -19,7 +19,7 @@ class DefaultSupportedCurrenciesServiceTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val localService = DefaultSupportedCurrenciesService(context.assets)
 
-        val supportedCurrencies = localService.getSupportedCurrencies()
+        val supportedCurrencies = localService.read()
         println(supportedCurrencies)
         assertThat(supportedCurrencies.isNullOrEmpty(), equalTo(false))
     }

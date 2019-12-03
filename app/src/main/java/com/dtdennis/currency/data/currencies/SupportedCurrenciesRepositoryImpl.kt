@@ -13,7 +13,7 @@ class SupportedCurrenciesRepositoryImpl(
     override fun getSupportedCurrencies(): Single<List<Currency>> =
         Single.fromCallable {
             if (supportedCurrencies == null)
-                supportedCurrencies = serviceDefault.getSupportedCurrencies()
+                supportedCurrencies = serviceDefault.read()
 
             supportedCurrencies
         }

@@ -1,14 +1,15 @@
 package com.dtdennis.currency.data.currencies
 
 import com.dtdennis.currency.core.currencies.Currency
+import com.dtdennis.currency.core.currencies.CurrencyIcon
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 
 class SupportedCurrenciesRepositoryImplTest {
-    private val fakeList = listOf(Currency("ABC", "Fake"))
+    private val fakeList = listOf(Currency("ABC", "Fake", CurrencyIcon(CurrencyIcon.Type.LOCAL, "")))
     private val supportedCurrSvc = mock<DefaultSupportedCurrenciesService> {
-        on { getSupportedCurrencies() } doReturn fakeList
+        on { read() } doReturn fakeList
     }
 
     @Test

@@ -7,6 +7,7 @@ object CurrencyRatesManifestMother {
     val DEFAULT_BASE_CURRENCY = "EUR"
     val DEFAULT_CURRENCY_RATES_DATE = Date().toString()
     val DEFAULT_CURRENCY_RATES_MAP = mapOf(
+        "EUR" to 1.0,
         "AUD" to 1.6122,
         "BGN" to 1.9507,
         "CAD" to 1.5298,

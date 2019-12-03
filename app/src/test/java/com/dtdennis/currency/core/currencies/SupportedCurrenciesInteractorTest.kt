@@ -5,10 +5,11 @@ import org.junit.Before
 import org.junit.Test
 
 class SupportedCurrenciesInteractorTest {
+    private val testIcon = CurrencyIcon(CurrencyIcon.Type.LOCAL, "")
     private val testList = listOf(
-        Currency("EUR", "Euro"),
-        Currency("USD", "US Dollar"),
-        Currency("GBP", "British Pound")
+        Currency("EUR", "Euro", testIcon),
+        Currency("USD", "US Dollar", testIcon),
+        Currency("GBP", "British Pound", testIcon)
     )
 
     private val testRepo = DummyRepository(testList)
