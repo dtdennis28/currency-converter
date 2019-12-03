@@ -77,7 +77,11 @@ dependencies {
 jacocoAndroidUnitTestReport {
     excludes += ['**/*_Factory**',
                  '**/internal/**',
-                 '**/ui/util/**',
+
+                 // Who unit tests RecyclerView code...
+                 '**/ui/**RV**',
+                 '**/ui/**RecyclerView**',
+
                  'com/dtdennis/currency/util/**']
 }
 

@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dtdennis.currency.R
 import com.dtdennis.currency.core.currencies.CurrencyIcon
+import com.dtdennis.currency.ui.util.ResourceIdFetcher
 import com.squareup.picasso.Picasso
 
 class CurrencyLineItemRVAdapter(

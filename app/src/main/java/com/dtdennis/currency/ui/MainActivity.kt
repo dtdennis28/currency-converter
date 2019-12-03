@@ -1,15 +1,12 @@
 package com.dtdennis.currency.ui
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dtdennis.currency.CurrencyApplication
 import com.dtdennis.currency.R
 import com.dtdennis.currency.data.util.Logger
-import com.dtdennis.currency.ui.util.LiveDataEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
