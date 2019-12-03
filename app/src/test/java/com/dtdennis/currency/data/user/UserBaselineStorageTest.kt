@@ -1,18 +1,16 @@
-package com.dtdennis.currency.ui.util
+package com.dtdennis.currency.data.user
 
-import androidx.test.core.app.ApplicationProvider
-import com.dtdennis.currency.ui.entities.UserBaseline
+import com.dtdennis.currency.core.user.UserBaseline
+import com.dtdennis.currency.util.TestSharedPrefs
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class UserBaselineStorageTest {
     private val testBaseline = UserBaseline("EUR", "Euro", 1.0, emptyMap())
     private val testDefaultBaseline = UserBaseline("DEF", "Default", 0.0, emptyMap())
-    private val storage = UserBaselineStorage(ApplicationProvider.getApplicationContext())
+    private val storage = UserBaselineStorage(TestSharedPrefs())
 
     @Test
     fun Should_ReturnBaseline_When_Stored() {

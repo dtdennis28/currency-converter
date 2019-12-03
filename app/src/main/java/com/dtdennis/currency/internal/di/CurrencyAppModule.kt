@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesRepository
 import com.dtdennis.currency.core.rates.CurrencyRatesRepository
+import com.dtdennis.currency.core.user.UserBaselineRepository
 import com.dtdennis.currency.data.currencies.DefaultSupportedCurrenciesService
 import com.dtdennis.currency.data.currencies.SupportedCurrenciesRepositoryImpl
 import com.dtdennis.currency.data.rates.CurrencyRatesRepositoryImpl
@@ -13,6 +14,8 @@ import com.dtdennis.currency.data.rates.CurrencyRatesService
 import com.dtdennis.currency.data.rates.DefaultCurrencyRatesService
 import com.dtdennis.currency.data.rates.storage.MemCurrencyRatesStorage
 import com.dtdennis.currency.data.rates.storage.PrefsCurrencyRatesStorage
+import com.dtdennis.currency.data.user.UserBaselineRepositoryImpl
+import com.dtdennis.currency.data.user.UserBaselineStorage
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.data.util.SchedulerProvider
 import com.dtdennis.currency.internal.retrofit.RetrofitInstanceHolder
@@ -79,6 +82,11 @@ class CurrencyAppModule(private val app: Application) {
     @Provides
     fun provideCurrencyRatesService(): CurrencyRatesService {
         return RetrofitInstanceHolder.instance.create(CurrencyRatesService::class.java)
+    }
+
+    @Provides
+    fun provideUserBaselineRepository(storage: UserBaselineStorage): UserBaselineRepository {
+        return UserBaselineRepositoryImpl(storage)
     }
 
     @Provides

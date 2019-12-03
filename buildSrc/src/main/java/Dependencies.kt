@@ -58,6 +58,7 @@ object Libraries {
     val junit = "junit:junit:${Versions.junit}"
     val androidXTestCore = "androidx.test:core:${Versions.androidXCore}"
     val androidXJUnit = "androidx.test.ext:junit:${Versions.androidXCore}"
+    val androidXArchTestCore = "androidx.arch.core:core-testing:${Versions.androidXLifecycle}"
     val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
     val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
 

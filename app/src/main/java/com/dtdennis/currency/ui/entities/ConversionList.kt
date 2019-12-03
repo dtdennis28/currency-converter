@@ -1,5 +1,7 @@
 package com.dtdennis.currency.ui.entities
 
+import com.dtdennis.currency.core.user.UserBaseline
+
 /**
  * Represents a list / recycler view of data
  */

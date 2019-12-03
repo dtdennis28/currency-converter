@@ -1,0 +1,266 @@
+[
+  {
+    "code": "AUD",
+    "name": "Australian Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_aud"
+    }
+  },
+  {
+    "code": "BGN",
+    "name": "Bulgarian Lev",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_bgn"
+    }
+  },
+  {
+    "code": "BRL",
+    "name": "Brazilian Real",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_brl"
+    }
+  },
+  {
+    "code": "CAD",
+    "name": "Canadian Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_cad"
+    }
+  },
+  {
+    "code": "CHF",
+    "name": "Swiss Franc",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_chf"
+    }
+  },
+  {
+    "code": "CNY",
+    "name": "Chinese Yuan",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_cny"
+    }
+  },
+  {
+    "code": "CZK",
+    "name": "Czech Koruna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_czk"
+    }
+  },
+  {
+    "code": "DKK",
+    "name": "Danish Krone",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_dkk"
+    }
+  },
+  {
+    "code": "EUR",
+    "name": "Euro",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_eur"
+    }
+  },
+  {
+    "code": "GBP",
+    "name": "British Pound",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_gbp"
+    }
+  },
+  {
+    "code": "HKD",
+    "name": "Hong Kong Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_hkd"
+    }
+  },
+  {
+    "code": "HRK",
+    "name": "Croatian Kuna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_hrk"
+    }
+  },
+  {
+    "code": "HUF",
+    "name": "Hungarian Forint",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_huf"
+    }
+  },
+  {
+    "code": "IDR",
+    "name": "Indonesian Rupiah",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_idr"
+    }
+  },
+  {
+    "code": "ILS",
+    "name": "Israeli New Shekel",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_ils"
+    }
+  },
+  {
+    "code": "INR",
+    "name": "Indian Rupee",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_inr"
+    }
+  },
+  {
+    "code": "ISK",
+    "name": "Icelandic Króna",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_isk"
+    }
+  },
+  {
+    "code": "JPY",
+    "name": "Japanese Yen",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_jpy"
+    }
+  },
+  {
+    "code": "KRW",
+    "name": "South Korean Won",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_krw"
+    }
+  },
+  {
+    "code": "MXN",
+    "name": "Mexican Peso",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_mxn"
+    }
+  },
+  {
+    "code": "MYR",
+    "name": "Malaysian Ringgit",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_myr"
+    }
+  },
+  {
+    "code": "NOK",
+    "name": "Norwegian Krone",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_nok"
+    }
+  },
+  {
+    "code": "NZD",
+    "name": "New Zealand Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_nzd"
+    }
+  },
+  {
+    "code": "PHP",
+    "name": "Philippine Peso",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_php"
+    }
+  },
+  {
+    "code": "PLN",
+    "name": "Polish Złoty",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_pln"
+    }
+  },
+  {
+    "code": "RON",
+    "name": "Romanian Leu",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_ron"
+    }
+  },
+  {
+    "code": "RUB",
+    "name": "Russian Ruble",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_rub"
+    }
+  },
+  {
+    "code": "SEK",
+    "name": "Swedish Krona",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_sek"
+    }
+  },
+  {
+    "code": "SGD",
+    "name": "Singapore Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_sgd"
+    }
+  },
+  {
+    "code": "THB",
+    "name": "Thai Baht",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_thb"
+    }
+  },
+  {
+    "code": "TRY",
+    "name": "Turkish Lira",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_try"
+    }
+  },
+  {
+    "code": "USD",
+    "name": "US Dollar",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_usd"
+    }
+  },
+  {
+    "code": "ZAR",
+    "name": "South African Rand",
+    "icon": {
+      "type": "LOCAL",
+      "location": "ic_zar"
+    }
+  }
+]

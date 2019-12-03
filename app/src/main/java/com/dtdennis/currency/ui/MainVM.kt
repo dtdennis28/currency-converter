@@ -8,76 +8,61 @@ import com.dtdennis.currency.core.currencies.CurrencyIcon
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
+import com.dtdennis.currency.core.user.UserBaseline
+import com.dtdennis.currency.core.user.UserBaselineInteractor
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.entities.ConversionList
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
-import com.dtdennis.currency.ui.entities.UserBaseline
-import com.dtdennis.currency.ui.util.UserBaselineStorage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val TAG = "MainVM"
-private const val DEFAULT_CURRENCY_CODE = "EUR"
-private const val DEFAULT_CURRENCY_NAME = "Euro"
-private const val DEFAULT_VALUE = 1.0
+
 private val DEFAULT_ICON = CurrencyIcon(
     CurrencyIcon.Type.LOCAL,
-    "R.drawable.ic_currency_generic"
+    "ic_currency_generic"
 )
 
 @Singleton
 class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
-    private val userBaselineStorage: UserBaselineStorage,
+    private val userBaselineInteractor: UserBaselineInteractor,
     currencyRatesInteractor: CurrencyRatesInteractor
 ) : ViewModel() {
-    private val DEFAULT_BASELINE = UserBaseline(
-        DEFAULT_CURRENCY_CODE,
-        DEFAULT_CURRENCY_NAME,
-        DEFAULT_VALUE,
-        mapOf(
-            DEFAULT_CURRENCY_CODE to 0
-        )
-    )
-
     /**
-     * Keep local ref of baseline to preserve across state changes
-     */
-    private var baseline = userBaselineStorage.getBaseline(DEFAULT_BASELINE)
-
-    /**
-     * Secondly stream,
-     * combine with latest baseline -> bifunction to convert baseline from latest manifest
+     * Stream the latest rates,
+     * combine with latest baseline,
+     * combine with the supported currencies list,
+     * Compile into a [ConversionList] for UI display
      */
     private val conversionListFlowable =
         currencyRatesInteractor
             .streamRates()
-            .map {
-                Pair(this.baseline, it)
+            .flatMapSingle { manifest ->
+                userBaselineInteractor
+                    .getUserBaseline()
+                    .map { baseline ->
+                        Pair(baseline, manifest)
+                    }
             }
             .flatMap(::combineDataStreams)
             .map(::composeConversionList)
             .onErrorReturn {
                 logger.d(TAG, "Unable to do any sort of conversions. Returning empty list")
-                ConversionList(DEFAULT_BASELINE, emptyList())
+                ConversionList(UserBaselineInteractor.DEFAULT_BASELINE, emptyList())
             }
             .toFlowable(BackpressureStrategy.LATEST)
 
     val conversionList = LiveDataReactiveStreams.fromPublisher(conversionListFlowable)
 
-    /**
-     * Immediately return the re-converted item without waiting for a new manifest
-     */
     fun onBaselineChanged(newUserBaseline: UserBaseline) {
         logger.d(TAG, "Baseline updated: $newUserBaseline")
 
-        userBaselineStorage.setBaseline(newUserBaseline)
-        this.baseline = newUserBaseline
+        // One-off subscription, minimal overhead
+        userBaselineInteractor.setUserBaseline(newUserBaseline).subscribe()
     }
 
     private fun combineDataStreams(baselineAndManifest: Pair<UserBaseline, CurrencyRatesManifest>): Observable<Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>> {

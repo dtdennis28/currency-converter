@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.dtdennis.currency.CurrencyApplication
 import com.dtdennis.currency.R
+import com.dtdennis.currency.core.user.UserBaseline
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.entities.ConversionList
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
-import com.dtdennis.currency.ui.entities.UserBaseline
 import com.dtdennis.currency.ui.recyclerview.RecyclerViewCoordinator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         recyclerViewCoordinator = RecyclerViewCoordinator(
-            currencies_rv,
             ::onCurrenciesRearranged,
+            currencies_rv,
             this
         )
 

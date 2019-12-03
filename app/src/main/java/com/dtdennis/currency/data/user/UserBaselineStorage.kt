@@ -1,15 +1,14 @@
-package com.dtdennis.currency.ui.util
+package com.dtdennis.currency.data.user
 
-import android.content.Context
-import android.preference.PreferenceManager
-import com.dtdennis.currency.ui.entities.UserBaseline
+import android.content.SharedPreferences
+import com.dtdennis.currency.core.user.UserBaseline
 import com.google.gson.Gson
 import javax.inject.Inject
 
 private const val PREF_NAME = "com.dtdennis.currency.BASELINE"
-class UserBaselineStorage @Inject constructor(context: Context) {
+
+class UserBaselineStorage @Inject constructor(private val sharedPrefs: SharedPreferences) {
     private val gson = Gson()
-    private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun setBaseline(baseline: UserBaseline) {
         sharedPrefs.edit().putString(PREF_NAME, gson.toJson(baseline)).apply()

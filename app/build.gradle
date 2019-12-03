@@ -72,6 +72,7 @@ dependencies {
     testImplementation Libraries.mockito
     testImplementation Libraries.mockitoKotlin
     testImplementation Libraries.androidXTestCore
+    testImplementation Libraries.androidXArchTestCore
     testImplementation Libraries.robolectric
 
     androidTestImplementation Libraries.androidXJUnit

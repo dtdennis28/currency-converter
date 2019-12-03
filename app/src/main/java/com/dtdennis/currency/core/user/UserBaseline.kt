@@ -1,4 +1,4 @@
-package com.dtdennis.currency.ui.entities
+package com.dtdennis.currency.core.user
 
 /**
  * Represents the current user "selection" (which currency is at the top, its input value, and the
