@@ -125,20 +125,20 @@ class MainVM @Inject constructor(
         }
 
         // Any additional currencies not previously in list
-        val newItemsMap = newList.associateBy { it.code }
-        manifest.rates.forEach { rate ->
-            if (!newItemsMap.containsKey(rate.key) && rate.key != baseline.code) {
-                newList.add(
-                    mapToCurrencyLineItem(
-                        baseline.code,
-                        baseline.value,
-                        rate.key,
-                        converter,
-                        supportedCurrencies
-                    )
-                )
-            }
-        }
+//        val newItemsMap = newList.associateBy { it.code }
+//        manifest.rates.forEach { rate ->
+//            if (!newItemsMap.containsKey(rate.key) && rate.key != baseline.code) {
+//                newList.add(
+//                    mapToCurrencyLineItem(
+//                        baseline.code,
+//                        baseline.value,
+//                        rate.key,
+//                        converter,
+//                        supportedCurrencies
+//                    )
+//                )
+//            }
+//        }
 
         return ConversionList(baseline, newList)
     }
