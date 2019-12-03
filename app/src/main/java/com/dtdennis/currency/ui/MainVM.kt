@@ -28,7 +28,8 @@ private val DEFAULT_ICON = CurrencyIcon(
     "R.drawable.ic_currency_generic"
 )
 
-class MainVM @Inject @Singleton constructor(
+@Singleton
+class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
     private val currencyRatesInteractor: CurrencyRatesInteractor
