@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity() {
             this
         )
 
+        // Initial items, no need for loading
+        recyclerViewCoordinator.setItems(
+            viewModel.initialConversionList.lineItems
+        )
+
         observeVM()
     }
 

@@ -53,6 +53,7 @@ class MainVMTest {
         TestLogger(),
         supportedCurrenciesInteractor,
         userBaselineInteractor,
+        ratesDataSourceHarness.defaultRatesService,
         currencyRatesInteractor
     )
 
@@ -112,7 +113,8 @@ class MainVMTest {
         val defaultRates = ratesDataSourceHarness.defaultRatesService.read().rates
         val defaultCurrencies = defaultSupportedCurrenciesService.read()
         val modifiedRatesOrder = defaultRates.toSortedMap(reverseOrder())
-        val modifiedPositions = modifiedRatesOrder.keys.associateWith { modifiedRatesOrder.keys.indexOf(it) }
+        val modifiedPositions =
+            modifiedRatesOrder.keys.associateWith { modifiedRatesOrder.keys.indexOf(it) }
         val userUpdatedBaseline = UserBaselineInteractor.DEFAULT_BASELINE.copy(
             code = modifiedRatesOrder.firstKey(),
             name = defaultCurrencies.first { it.code == modifiedRatesOrder.firstKey() }.name,

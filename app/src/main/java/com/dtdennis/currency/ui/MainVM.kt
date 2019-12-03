@@ -1,5 +1,6 @@
 package com.dtdennis.currency.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.dtdennis.currency.core.conversion.CurrencyConverter
@@ -10,11 +11,14 @@ import com.dtdennis.currency.core.rates.CurrencyRatesInteractor
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.dtdennis.currency.core.user.UserBaseline
 import com.dtdennis.currency.core.user.UserBaselineInteractor
+import com.dtdennis.currency.data.rates.DefaultCurrencyRatesService
 import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.entities.ConversionList
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,6 +34,7 @@ class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
     private val userBaselineInteractor: UserBaselineInteractor,
+    private val defaultCurrencyRatesService: DefaultCurrencyRatesService,
     currencyRatesInteractor: CurrencyRatesInteractor
 ) : ViewModel() {
     /**
@@ -57,6 +62,27 @@ class MainVM @Inject constructor(
             .toFlowable(BackpressureStrategy.LATEST)
 
     val conversionList = LiveDataReactiveStreams.fromPublisher(conversionListFlowable)
+
+    /**
+     * Compose an initial data so that the view can immediately display rather than
+     * depending on the currency rates stream which is updated every 1 second,
+     * and which will require waiting for a network call when the app first runs.
+     *
+     * This way the view is not dependent on any LiveData streams or anything to start showing
+     * a currency list and also working
+     */
+    val initialConversionList = composeConversionList(
+        Triple(
+            // Safe for now...
+            userBaselineInteractor.getUserBaseline().blockingGet(),
+            defaultCurrencyRatesService.read(),
+            // Safe for now...
+            supportedCurrenciesInteractor
+                .getSupportedCurrencies()
+                .blockingGet()
+                .associateBy { it.code }
+        )
+    )
 
     fun onBaselineChanged(newUserBaseline: UserBaseline) {
         logger.d(TAG, "Baseline updated: $newUserBaseline")
