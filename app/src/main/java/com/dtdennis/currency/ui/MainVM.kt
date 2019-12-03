@@ -45,10 +45,10 @@ class MainVM @Inject constructor(
         )
     )
 
-    private val startingBaseline = userBaselineStorage.getBaseline(DEFAULT_BASELINE)
-
-    private val currentBaselineSub = PublishSubject.create<UserBaseline>()
-    private val currentBaselineObs = currentBaselineSub.startWith(startingBaseline)
+    /**
+     * Keep local ref of baseline to preserve across state changes
+     */
+    private var baseline = userBaselineStorage.getBaseline(DEFAULT_BASELINE)
 
     /**
      * Secondly stream,
@@ -57,12 +57,9 @@ class MainVM @Inject constructor(
     private val conversionListFlowable =
         currencyRatesInteractor
             .streamRates()
-            .withLatestFrom(
-                currentBaselineObs,
-                BiFunction { manifest: CurrencyRatesManifest, baseline: UserBaseline ->
-                    return@BiFunction Pair(baseline, manifest)
-                }
-            )
+            .map {
+                Pair(this.baseline, it)
+            }
             .flatMap(::combineDataStreams)
             .map(::composeConversionList)
             .onErrorReturn {
@@ -80,7 +77,7 @@ class MainVM @Inject constructor(
         logger.d(TAG, "Baseline updated: $newUserBaseline")
 
         userBaselineStorage.setBaseline(newUserBaseline)
-        currentBaselineSub.onNext(newUserBaseline)
+        this.baseline = newUserBaseline
     }
 
     private fun combineDataStreams(baselineAndManifest: Pair<UserBaseline, CurrencyRatesManifest>): Observable<Triple<UserBaseline, CurrencyRatesManifest, Map<String, Currency>>> {

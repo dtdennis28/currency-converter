@@ -41,6 +41,9 @@ class CurrencyLineItemRVAdapter(
     class ValueTextWatcher(
         private val valueChangeCallback: (newValue: Double) -> Unit
     ) : TextWatcher {
+        private val DEFAULT_VALUE = 0.0
+        private var currentValue: Double = DEFAULT_VALUE
+
         override fun afterTextChanged(p0: Editable?) {
 
         }
@@ -53,10 +56,14 @@ class CurrencyLineItemRVAdapter(
             val newValue = try {
                 p0?.toString()?.toDouble() ?: throw Exception()
             } catch (error: Throwable) {
-                0.0
+                DEFAULT_VALUE
             }
 
-            valueChangeCallback(newValue)
+            // Don't need to send multiple of the same value (will trigger recalculations, etc.)
+            if (newValue != currentValue) {
+                this.currentValue = newValue
+                valueChangeCallback(newValue)
+            }
         }
     }
 
