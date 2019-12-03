@@ -12,6 +12,7 @@ import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.entities.ConversionList
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import com.dtdennis.currency.ui.entities.UserBaseline
+import com.dtdennis.currency.ui.util.UserBaselineStorage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -32,7 +33,8 @@ private val DEFAULT_ICON = CurrencyIcon(
 class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
-    private val currencyRatesInteractor: CurrencyRatesInteractor
+    private val currencyRatesInteractor: CurrencyRatesInteractor,
+    private val userBaselineStorage: UserBaselineStorage
 ) : ViewModel() {
     private val DEFAULT_BASELINE = UserBaseline(
         DEFAULT_CURRENCY_CODE,
@@ -43,8 +45,10 @@ class MainVM @Inject constructor(
         )
     )
 
+    private val startingBaseline = userBaselineStorage.getBaseline(DEFAULT_BASELINE)
+
     private val currentBaselineSub = PublishSubject.create<UserBaseline>()
-    private val currentBaselineObs = currentBaselineSub.startWith(DEFAULT_BASELINE)
+    private val currentBaselineObs = currentBaselineSub.startWith(startingBaseline)
 
     /**
      * Secondly stream,
@@ -75,6 +79,7 @@ class MainVM @Inject constructor(
     fun onBaselineChanged(newUserBaseline: UserBaseline) {
         logger.d(TAG, "Baseline updated: $newUserBaseline")
 
+        userBaselineStorage.setBaseline(newUserBaseline)
         currentBaselineSub.onNext(newUserBaseline)
     }
 
