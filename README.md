@@ -7,6 +7,14 @@
 Welcome to Rates! Drew Dennis's rise to the Revolut interview challenge to create a real-time,
 production-ready currency converter.
 
+# App features
+- Allows you to convert from one currency to dozens more
+- Fetches the latest currency conversion rates every 1-sec, and updates the screen immediately.
+(e.g. if you were converting 1.0 Euro to USD, you would see real-time updates on your screen
+for the USD value).
+- Saves your most recent currency. If you leave the app, the currency which you were using
+to convert from will always be at the top and ready to use again.
+
 # Setup overview
 ## Building and running
 Pretty standard--clone and use Gradle or Android Studio. Shouldn't be anything fancy to know.
@@ -37,6 +45,7 @@ available for the use cases.
 - `ui` package for presentation of the core/data dynamic
 
 ## Software design decisions
+### Immediate data
 We choose to not propagate any caught errors, network issues, or any issues fetching data otherwise
 to the user. We always rely on usable local defaults so that the user may always use the application.
 This is the most usable design, as the user may always do currency conversions even without internet,
@@ -57,6 +66,24 @@ extreme condition where assets are failing to load).
 Moreover, the "every second" streaming of currency rates also works tremendously in our favor,
 as we have no need to worry about any retry policy with the network call. We are simply always
 "retrying" becuse we are never in an unrecoverable error state as it pertains to fetching rates.
+
+### User preferences
+We choose to preserve the user's most recent preference (you will see this referred to as
+`UserBaseline` in the code. See `com.dtdennis.currency.core.user.UserBaseline`/`Interactor`/`Repository`)
+for his/her base currency.
+
+This was not part of the original spec, but oh well.
+
+The user "baseline" (last selected currency, last input currency value, etc.) is stored in local
+storage.
+
+Upon app restart, we fetch the last user baseline as an immediate source of data to start allowing
+the user to interact with the app for conversions (folding back into the first priority above,
+immediate data).
+
+Combining the last user baseline with the last cached currency rates manifest (API response) allows
+us to provide the user with immediate and full acces to the app, whether there is internet or not,
+"hassle free".
 
 ## UI architecture
 Within the `ui` package, we are using an MVVM pattern. This has been chosen because it is the most
