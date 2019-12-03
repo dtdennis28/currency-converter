@@ -74,9 +74,16 @@ dependencies {
     androidTestImplementation Libraries.espresso
 }
 
+jacocoAndroidUnitTestReport {
+    excludes += ['**/*_Factory**',
+                 '**/internal/**',
+                 '**/ui/util/**',
+                 'com/dtdennis/currency/util/**']
+}
+
 jacocoBadgeGenSetting {
     // Note: not safe for build types / product flavors,
     // But we only care about debug unit tests anyway, and this app has no product flavors
-    jacocoReportPath  "${project.buildDir}/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml"
+    jacocoReportPath "${project.buildDir}/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml"
     readmePath "${project.rootDir}/README.md"
 }
