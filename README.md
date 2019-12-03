@@ -1,6 +1,8 @@
 [![Build status](https://build.appcenter.ms/v0.1/apps/4754bc99-c7e9-423f-b8cf-5386c52a5aac/branches/master/badge)](https://appcenter.ms)
 ![INSTRUCTION](https://img.shields.io/badge/instruction--coverage-82%25-brightgreen.svg)
 
+[Download latest release](https://install.appcenter.ms/users/dtdennis28/apps/rates/distribution_groups/public)
+
 # Introduction
 Welcome to Rates! Drew Dennis's rise to the Revolut interview challenge to create a real-time,
 production-ready currency converter.
