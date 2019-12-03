@@ -2,6 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'jacoco-android'
+apply plugin: 'com.github.dawnwords.jacoco.badge'
+
+jacoco {
+    toolVersion = ProjectConstants.jacocoVersion
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
 
 android {
     compileSdkVersion ProjectConstants.compileSdkVersion
@@ -62,4 +72,11 @@ dependencies {
 
     androidTestImplementation Libraries.androidXJUnit
     androidTestImplementation Libraries.espresso
+}
+
+jacocoBadgeGenSetting {
+    // Note: not safe for build types / product flavors,
+    // But we only care about debug unit tests anyway, and this app has no product flavors
+    jacocoReportPath  "${project.buildDir}/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml"
+    readmePath "${project.rootDir}/README.md"
 }

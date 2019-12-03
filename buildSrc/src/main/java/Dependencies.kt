@@ -13,6 +13,8 @@ object Versions {
 
     val androidGradle = "3.5.1"
     val kotlin = "1.3.50"
+    val jacocoGradlePlugin = "0.1.4"
+    val jacocoBadgePlugin = "0.1.0"
 
     val junit = "4.12"
     val espresso = "3.1.1"
@@ -23,8 +25,10 @@ object Versions {
 
 object Libraries {
     val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradle}"
+    val jacocoGradlePlugin = "com.dicedmelon.gradle:jacoco-android:${Versions.jacocoGradlePlugin}"
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    val jacocoBadgePlugin = "com.github.dawnwords:jacoco-badge-gradle-plugin:${Versions.jacocoBadgePlugin}"
 
     val appCompat = "androidx.appcompat:appcompat:${Versions.androidXCore}"
     val ktx = "androidx.core:core-ktx:${Versions.androidXCore}"

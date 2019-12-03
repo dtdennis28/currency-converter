@@ -7,4 +7,6 @@ object ProjectConstants {
     // Semantic version; as a convention, for determining version code, parts are powers of 10 (e.g. 1.0.0 == '1' 0 '0' 0 '0')
     val versionCode = 10000
     val versionName = "1.0.0"
+
+    val jacocoVersion = "0.8.4"
 }
