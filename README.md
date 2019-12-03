@@ -192,6 +192,10 @@ You can see a functional list of all libraries used by opening `buildSrc/src/mai
 
 - Robolectric
 
+- Continuous integration
+
+- Gradle customization
+
 # Acknowledgments
 There are plenty of libraries, for which I am not yet taking the time to copy/paste their licenses
 here.
