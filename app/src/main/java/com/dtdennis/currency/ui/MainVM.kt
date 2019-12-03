@@ -1,6 +1,5 @@
 package com.dtdennis.currency.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import com.dtdennis.currency.core.conversion.CurrencyConverter
@@ -16,9 +15,7 @@ import com.dtdennis.currency.data.util.Logger
 import com.dtdennis.currency.ui.entities.ConversionList
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
