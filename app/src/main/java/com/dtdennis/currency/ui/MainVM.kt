@@ -17,6 +17,7 @@ import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val TAG = "MainVM"
 private const val DEFAULT_CURRENCY_CODE = "EUR"
@@ -27,7 +28,7 @@ private val DEFAULT_ICON = CurrencyIcon(
     "R.drawable.ic_currency_generic"
 )
 
-class MainVM @Inject constructor(
+class MainVM @Inject @Singleton constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
     private val currencyRatesInteractor: CurrencyRatesInteractor
