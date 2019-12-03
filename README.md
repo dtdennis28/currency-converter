@@ -139,13 +139,13 @@ For the resource-bundled country flag icons, I have used an icon pack downloaded
 [flaticon.com](http://flaticon.com), via the author [Freepik](https://www.freepik.com/home)
 
 The prescripted attribution is thus:
-```
+
 Icon(s) made by [Freepik](https://www.freepik.com/home) from [www.flaticon.com](http://www.flaticon.com)
-```
 
 # Contact info
 If you have any questions, or would like to be invited to the AppCenter CI console, or anything
 else, you may contact me directly:
 
 **Email**: [dennisdrew@gmail.com](mailto:dennisdrew@gmail.com)
+
 **Phone**: [+15134033455](tel:+15134033455)
