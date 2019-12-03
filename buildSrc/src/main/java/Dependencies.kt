@@ -4,6 +4,8 @@ object Versions {
     val retrofit = "2.6.2"
     val picasso = "2.71828"
 
+    val appCenter = "2.5.0"
+
     // Support type libs
     val androidXCore = "1.1.0"
     val constraintLayout = "1.1.3"
@@ -49,6 +51,9 @@ object Libraries {
     val retrofitGson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
 
     val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
+
+    val appCenterAnalytics = "com.microsoft.appcenter:appcenter-analytics:${Versions.appCenter}"
+    val appCenterCrashes = "com.microsoft.appcenter:appcenter-crashes:${Versions.appCenter}"
 
     val junit = "junit:junit:${Versions.junit}"
     val androidXTestCore = "androidx.test:core:${Versions.androidXCore}"

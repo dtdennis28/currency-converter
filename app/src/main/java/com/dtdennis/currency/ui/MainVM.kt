@@ -33,8 +33,8 @@ private val DEFAULT_ICON = CurrencyIcon(
 class MainVM @Inject constructor(
     private val logger: Logger,
     private val supportedCurrenciesInteractor: SupportedCurrenciesInteractor,
-    private val currencyRatesInteractor: CurrencyRatesInteractor,
-    private val userBaselineStorage: UserBaselineStorage
+    private val userBaselineStorage: UserBaselineStorage,
+    currencyRatesInteractor: CurrencyRatesInteractor
 ) : ViewModel() {
     private val DEFAULT_BASELINE = UserBaseline(
         DEFAULT_CURRENCY_CODE,

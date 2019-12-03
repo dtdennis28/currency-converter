@@ -51,6 +51,10 @@ dependencies {
 
     implementation Libraries.picasso
 
+    // App Center
+    implementation Libraries.appCenterAnalytics
+    implementation Libraries.appCenterCrashes
+
     // Kotlin stuff
     implementation Libraries.kotlinStdLib
 

@@ -20,6 +20,10 @@ import com.dtdennis.currency.ui.entities.CurrencyLineItem
 import com.dtdennis.currency.ui.util.ResourceIdFetcher
 import com.squareup.picasso.Picasso
 
+
+/**
+ * Adapter for the currency conversion RV
+ */
 class CurrencyLineItemRVAdapter(
     private val onItemClickListener: (position: Int, item: CurrencyLineItem, itemView: View) -> Unit,
     private val onValueChangeListener: (position: Int, item: CurrencyLineItem, value: Double) -> Unit
@@ -38,6 +42,7 @@ class CurrencyLineItemRVAdapter(
         var textWatcher: TextWatcher? = null
     }
 
+    // Should only be used on top row
     class ValueTextWatcher(
         private val valueChangeCallback: (newValue: Double) -> Unit
     ) : TextWatcher {
@@ -70,7 +75,12 @@ class CurrencyLineItemRVAdapter(
     override fun getItemCount() = items.size
 
     /**
-     * Full re-set of the list (e.g. backing list & view re-render)
+     * Full re-set of the list
+     *
+     * Rather than notifyDataSetChanged(), just using notifyItemChanged on every item.
+     *
+     * TODO: This could be handled better for better list scrolling improvement, but it is still
+     * better than notifyDataSetChanged
      */
     fun setItems(items: List<CurrencyLineItem>) {
         this.items = items
@@ -85,6 +95,8 @@ class CurrencyLineItemRVAdapter(
     /**
      * Only notify the adapter about the moved item, but also re-set the backing list
      * Will maintain all views already bound, but re-bind the rearranged item
+     *
+     * Reconstruct/bind the whole list after an item has been moved to a new position.
      */
     fun onItemMoved(newItems: List<CurrencyLineItem>, fromPosition: Int, toPosition: Int) {
         this.items = newItems
@@ -115,7 +127,9 @@ class CurrencyLineItemRVAdapter(
         holder: CurrencyLineItemVH
     ) {
         holder.conversionET.setOnTouchListener(null)
-        holder.itemView.setOnClickListener(null)
+        holder.itemView.setOnClickListener {
+            holder.conversionET.requestFocus()
+        }
 
         holder.conversionET.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
@@ -124,6 +138,7 @@ class CurrencyLineItemRVAdapter(
                 hideKeyboard(holder.conversionET)
             } else {
                 holder.conversionET.setTextColor(holder.itemView.resources.getColor(R.color.colorAccent))
+                showKeyboard(holder.conversionET)
             }
         }
 
@@ -142,6 +157,11 @@ class CurrencyLineItemRVAdapter(
                 }
             holder.conversionET.addTextChangedListener(holder.textWatcher)
         }
+    }
+
+    fun showKeyboard(editText: View) {
+        val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun hideKeyboard(editText: View) {

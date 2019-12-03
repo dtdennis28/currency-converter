@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.dtdennis.currency.ui.entities.CurrencyLineItem
 
 /**
- * Cluster all the RV mgmt into a "coordinator" to keep activity clean
+ * Cluster all the RV mgmt into a "coordinator" to keep activity clean.
+ *
+ * Used to orchestrate common RV tasks like onclick listeners and updating items
  */
 private const val ANIMATION_WAIT_TIME = 500L
 
 class RecyclerViewCoordinator(
-    private val recyclerView: RecyclerView,
     private val onItemsRearrangedListener: (newItems: List<CurrencyLineItem>) -> Unit,
+    recyclerView: RecyclerView,
     context: Context
 ) {
     private val adapter = CurrencyLineItemRVAdapter(
