@@ -1,7 +1,7 @@
 package com.dtdennis.currency.data.util
 
 /**
- * Simple logger interface
+ * Simple logger interface, helpful with DI
  */
 interface Logger {
     fun d(tag: String, message: String)

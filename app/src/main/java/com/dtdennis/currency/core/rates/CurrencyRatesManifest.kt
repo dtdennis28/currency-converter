@@ -10,7 +10,7 @@ data class CurrencyRatesManifest(
     val base: String,
 
     /**
-     * Timestamp representing the age of these rates; e.g. how current they are
+     * Timestamp of when these rates were determined
      */
     val date: String,
 

@@ -7,8 +7,8 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 
 /**
- * Can be replaced by a network service,
- * just fetch supported currencies from assets JSON file
+ * Just reads the bundled JSON file for a list of supported currencies.
+ * Can be API-backed in the future
  */
 private const val FILENAME = "currency_codes_manifest.json"
 

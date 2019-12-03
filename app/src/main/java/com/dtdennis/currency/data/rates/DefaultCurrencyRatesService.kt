@@ -4,6 +4,10 @@ import android.content.res.AssetManager
 import com.dtdennis.currency.core.rates.CurrencyRatesManifest
 import com.google.gson.Gson
 
+/**
+ * Just reads the bundled JSON file for the default rates.
+ */
+
 private const val FILENAME = "default_rates_manifest.json"
 class DefaultCurrencyRatesService(
     private val assetManager: AssetManager

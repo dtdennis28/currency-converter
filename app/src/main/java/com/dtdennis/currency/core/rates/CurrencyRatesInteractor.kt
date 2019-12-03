@@ -4,7 +4,7 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
- * Use case(s) for fetching the rates from a data source
+ * Use case for streaming a periodically updating [CurrencyRatesManifest]
  */
 class CurrencyRatesInteractor @Inject constructor(private val repository: CurrencyRatesRepository) {
     fun streamRates(): Observable<CurrencyRatesManifest> = repository.streamRates()

@@ -182,7 +182,7 @@ class CurrencyRatesRepositoryImplTest {
         }
 
         val memRatesStorage = MemCurrencyRatesStorage()
-        val diskRatesStorage = PrefsCurrencyRatesStorage(TestSharedPrefs(), Gson())
+        val diskRatesStorage = PrefsCurrencyRatesStorage(TestSharedPrefs())
 
         fun setNetworkRates(rates: CurrencyRatesManifest?) {
             this.networkRates = rates

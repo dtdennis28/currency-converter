@@ -82,11 +82,6 @@ class CurrencyAppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideGson(): Gson {
-        return Gson()
-    }
-
-    @Provides
     fun provideSharedPrefs(context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }

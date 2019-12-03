@@ -10,6 +10,16 @@ import io.reactivex.*
 import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit
 
+/**
+ * A triply-backed repository (API, disk, memory) for fetching the latest currency rates.
+ *
+ * Note: Will also return the bundled "default" currency rates if no other source is available.
+ * So, no error should ever be emitted from the rates-streaming.
+ *
+ * Note 2: Always only streams via one base currency. It does not readjust the streaming for a new
+ * base currency; rather, it makes the assumption that as long as EUR = 1.0 (is the base), we can
+ * convert to and from any other currency.
+ */
 private const val TAG = "CurrRatesRepo"
 private const val SERVICE_PING_INTERVAL = 1L
 private val PING_TIME_UNIT = TimeUnit.SECONDS
@@ -29,14 +39,14 @@ class CurrencyRatesRepositoryImpl(
      *
      * In order of importance, prefer:
      * - Network
-     * - Cache
      * - Memory
+     * - Disk cache
+     * - Default / bundled
      *
-     * Start w/ in memory or
      * Always ping server every 1 sec
      * Upon each sec, if server fails,
      * attempt in-memory; if null, attempt cache,
-     * if still null, throw error but keep trying
+     * if still null, use bundled rates
      */
     override fun streamRates(): Observable<CurrencyRatesManifest> {
         return Observable
@@ -69,7 +79,7 @@ class CurrencyRatesRepositoryImpl(
 
 
     /**
-     * Take the new rates and store them, then return a flowable emitting these new rates
+     * Take the new rates and store them, then return a Single emitting these new rates
      */
     private fun storeNewRates(newRates: CurrencyRatesManifest): Single<CurrencyRatesManifest> {
         return diskStorage

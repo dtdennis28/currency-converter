@@ -4,6 +4,11 @@ import com.dtdennis.currency.core.currencies.Currency
 import com.dtdennis.currency.core.currencies.SupportedCurrenciesRepository
 import io.reactivex.Single
 
+/**
+ * Reads the bundled JSON file for a list of supported currencies
+ *
+ * Can be API-backed in future.
+ */
 class SupportedCurrenciesRepositoryImpl(
     private val serviceDefault: DefaultSupportedCurrenciesService
 ) : SupportedCurrenciesRepository {

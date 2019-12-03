@@ -5,6 +5,9 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import javax.inject.Inject
 
+/**
+ * A [CurrencyRatesStorage] simply using memory
+ */
 class MemCurrencyRatesStorage @Inject constructor() : CurrencyRatesStorage {
     private var rates: CurrencyRatesManifest? = null
 

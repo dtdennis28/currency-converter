@@ -16,8 +16,11 @@ import javax.inject.Inject
 private const val MANIFEST_PREFS_KEY = "com.dtdennis.currency.RatesManifest"
 
 class PrefsCurrencyRatesStorage
-    @Inject constructor(private val sharedPreferences: SharedPreferences,
-                        private val gson: Gson) : CurrencyRatesStorage {
+@Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) : CurrencyRatesStorage {
+    private val gson = Gson()
+
     override fun setRates(currencyRatesManifest: CurrencyRatesManifest): Completable =
         Completable.fromAction {
             sharedPreferences

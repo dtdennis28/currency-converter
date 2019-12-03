@@ -3,20 +3,16 @@ package com.dtdennis.currency.core.conversion
 /**
  * Given a map of rates keyed by the currency code (e.g. AUD),
  * convert a given value from one currency to the desired currency.
- *
- * Note: the base currency is implied by the caller; meaning,
- * this class will simply take the value given, and multiply it by the
- * rate associated to the destination currency. There is no need to
- * describe or account for the original currency.
  */
 class CurrencyConverter(private val ratesMap: Map<String, Double>) {
-    fun convert(fromValue: Double, fromCode: String, destinationCode: String): Double {
+    fun convert(fromValue: Double, fromCode: String, toCode: String): Double {
         val fromRate = getRateByCode(fromCode)
-        val toRate = getRateByCode(destinationCode)
+        val toRate = getRateByCode(toCode)
 
         /*
             (Fv / Fr) = (Tv / Tr)
-            (Fv / Fr) * Tr = Tv
+            =>
+            Tv = (Fv / Fr) * Tr
          */
         return (fromValue / fromRate) * toRate
     }
