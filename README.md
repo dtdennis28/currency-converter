@@ -1,5 +1,5 @@
 [![Build status](https://build.appcenter.ms/v0.1/apps/4754bc99-c7e9-423f-b8cf-5386c52a5aac/branches/master/badge)](https://appcenter.ms)
-![INSTRUCTION](https://img.shields.io/badge/instruction--coverage-55%25-orange.svg)
+![INSTRUCTION](https://img.shields.io/badge/instruction--coverage-83%25-brightgreen.svg)
 
 # README
 

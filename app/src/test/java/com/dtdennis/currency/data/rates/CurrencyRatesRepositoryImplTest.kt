@@ -5,12 +5,11 @@ import com.dtdennis.currency.data.rates.storage.MemCurrencyRatesStorage
 import com.dtdennis.currency.data.rates.storage.PrefsCurrencyRatesStorage
 import com.dtdennis.currency.util.TestSharedPrefs
 import com.dtdennis.currency.util.mothers.CurrencyRatesManifestMother
+import com.dtdennis.currency.util.mothers.DefaultServiceMothers.defaultCurrencyRatesService
 import com.dtdennis.currency.util.mothers.LoggerMother.TEST_LOGGER
 import com.dtdennis.currency.util.mothers.SchedulerProviderMother
-import com.google.gson.Gson
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -27,13 +26,10 @@ class CurrencyRatesRepositoryImplTest {
     private val testMemRates = testNetworkRates.copy(date = testNetworkRates.date + "-mem")
 
     private val testDataSource = TestDataSourceHarness()
+    private val testDefaultCurrencyRatesService = defaultCurrencyRatesService()
 
     private val testSchedulerProvider = SchedulerProviderMother.testSchedulerProvider()
-    private val testScheduler = testSchedulerProvider.io
-
-    private val mockDefaultCurrencyRatesService = mock<DefaultCurrencyRatesService>{
-        on { read() } doReturn CurrencyRatesManifestMother.defaultTestCurrencyRatesManifest()
-    }
+    private val testScheduler = testSchedulerProvider.io as TestScheduler
 
     private val repo = CurrencyRatesRepositoryImpl(
         TEST_LOGGER,
@@ -41,7 +37,7 @@ class CurrencyRatesRepositoryImplTest {
         testDataSource.networkRatesService,
         testDataSource.diskRatesStorage,
         testDataSource.memRatesStorage,
-        mockDefaultCurrencyRatesService
+        testDefaultCurrencyRatesService
     )
 
     @Before
@@ -87,6 +83,19 @@ class CurrencyRatesRepositoryImplTest {
 
         // Then receive in-mem manifest
         subscriber.assertValue(testMemRates)
+    }
+
+    @Test
+    fun Should_SourceDefault_When_NoDataSourcesAvailable() {
+        // Given no service, no disk, no mem
+        testDataSource.clearAllRates()
+
+        // When streaming
+        val observer = testStream()
+        testScheduler.advance()
+
+        // Then default manifest is used
+        observer.assertValue(testDefaultCurrencyRatesService.read())
     }
 
     @Test
